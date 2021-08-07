@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <h2 align="center"> Welcome </h2>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ลำดับที่</th>
+                    <th>ชื่อ</th>
+                    <th>นามสกุล</th>
+                    <th>phone</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for xx in datas %}
+                <tr>                 
+                    <td>{{xx.0}}</td>
+                    <td>{{xx.2}}</td>
+                    <td>{{xx.3}}</td>
+                    <td>{{xx.4}}</td>
+
+                    <td>
+
+                        <a type="button" class="btn btn-warning btn-xs" data-bs-toggle="modal"
+                            data-bs-target="#modaledit{{xx.0}}">Edit</a>
+
+
+                        <a href="/delete/{{xx.0}}" class="btn btn-danger btn-xs"
+                            onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่?')">Delete</a>
+                    </td>
+                </tr>
+
+                <!-- DIALOG -->
+                <div id="modaledit{{xx.0}}" class="modal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/update" method="POST">
+                                    <div class="form-group">
+                                        <label>ชื่อ:</label>
+                                        <input type="hidden" name="id" value="{{xx.0}}">
+                                        <input type="text" class="form-control" name="fname" value="{{xx.2}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>นามสกุล:</label>
+                                        <input type="text" class="form-control" name="lname" value="{{xx.3}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>เบอร์โทรศัพท์:</label>
+                                        <input type="text" class="form-control" name="phone" value="{{xx.4}}">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" >Save changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/addform" class="btn btn-primary">add name</a>
+
+    </div>
+
+
+{% endblock %}

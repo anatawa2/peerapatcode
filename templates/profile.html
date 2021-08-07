@@ -1,0 +1,102 @@
+{% extends 'layout.html' %}
+{% block title %} My Profile {% endblock %}
+
+{% block content %}
+<style>
+    .pf {
+        vertical-align: middle;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+    }
+</style>
+
+
+<br><br>
+<h2>แก้ไขข้อมูลส่วนตัว :</h2>
+{% with msg = get_flashed_messages() %}
+{% if msg %}
+<ul>
+    {% for message in msg %}
+    <h4 style="color: #ff0000;">{{ message }}</h4>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<br>
+<div class="container">
+
+    {% if filename %}
+    <img src="/{{maindir}}/{{subdir}}/{{filename.1.decode()}}" class="pf">
+    {% endif %}
+
+    <form method="post" action="/upload" enctype="multipart/form-data"><br>
+        <dl>
+            <p>
+                <input type="file" name="file" class="form-label" autocomplete="off" required>
+            </p>
+        </dl>
+        <p>
+            <input type="submit" value="อัพโหลดโปรไฟล์" class="btn btn-info">
+        </p>
+    </form><br><br>
+
+    {% if filename %}
+    <img src="/{{maindir}}/{{subdir}}/{{filename.2.decode()}}" class="pf">
+    {% endif %}
+
+    <form method="post" action="/upload2" enctype="multipart/form-data"><br>
+        <dl>
+            <p>
+                <input type="file" name="file" class="form-label" autocomplete="off" required>
+            </p>
+        </dl>
+        <p>
+            <input type="submit" value="อัพโหลดตารางเรียน/สอน" class="btn btn-info">
+        </p>
+    </form>
+
+    <br>
+
+    <form action="/update" method="POST">
+        <div class="form-group">
+            <label>ชื่อ:</label>
+            <input type="hidden" name="id" value="{{account.0}}">
+            <input type="text" class="form-control" name="fname" value="{{account.2}}">
+        </div>
+        <div class="form-group">
+            <label>นามสกุล:</label>
+            <input type="text" class="form-control" name="lname" value="{{account.3}}">
+        </div>
+        <div class="form-group">
+            <label>เบอร์โทรศัพท์:</label>
+            <input type="text" class="form-control" name="phone" value="{{account.4}}">
+        </div>
+        <div class="form-group">
+            <label>สาขา:</label>
+            <input type="text" class="form-control" name="faculty" value="{{account.7}}">
+        </div>
+        <div class="form-group">
+            <label>สาขา:</label>
+            <input type="text" class="form-control" name="sfaculty" value="{{account.8}}">
+        </div>
+        <div class="form-group">
+            <label>LINE : TOKEN</label> <a href="#">วิธีใช้</a>
+            <input type="text" class="form-control" name="token" value="{{account.9}}">
+        </div>
+        <div class="form-group">
+            <label>รหัสผ่าน:</label>
+            <input type="text" class="form-control" name="password" value="{{account.5}}">
+        </div>
+        <br>
+        <b>
+        </b>
+        <div class="form-group">
+            <br><button type="submit" class="btn btn-info">บันทึกข้อมูล</button>
+        </div>
+    </form>
+</div>
+<br><br><br>
+
+
+{% endblock %}

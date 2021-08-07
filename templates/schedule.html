@@ -1,0 +1,150 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<br>
+<div align="center" class="rounded mx-auto d-block">
+    
+    {% if filename %}
+    <img src="/{{maindir}}/{{subdir}}/{{filename.1.decode()}}" width="270" height="270">
+    {% else %}
+    <img src="/static/uploads/pf.jpg" width="270" height="270">
+    {% endif %}
+</div>
+
+
+
+<br>
+<div class="container">
+
+
+    <table class="table table-bordered">
+        <body>
+            <tr>
+                <th>ชื่อ</th>
+
+                <th>{{info.2}}</th>
+
+            </tr>
+        </body>
+
+        <body>
+            <tr>
+                <td>นามสกุล</td>
+                <td>{{info.3}}</td>
+            </tr>
+        </body>
+
+        <body>
+            <tr>
+                <td>หมายเลขโทรศัพท์</td>
+                <td>{{info.4}}</td>
+            </tr>
+        </body>
+
+        <body>
+            <tr>
+                <td>คณะ</td>
+                <td>{{info.7}}</td>
+            </tr>
+        </body>
+        <tbody>
+            <tr>
+                <td>สาขา</td>
+                <td>{{info.8}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br><br>
+
+    <div align="center" class="rounded mx-auto d-block">
+        {% if filename %}
+        <img src="/{{maindir}}/{{subdir}}/{{filename.2.decode()}}" class="card-img-top">
+        {% else %}
+        <img src="/static/uploads/sc.jpg" width="400" height="270">
+        {% endif %}
+    </div>
+    {% if session['seat'] == 'student' %}
+    <H1 align="center">ตารางสอน</H1><br><br>
+    {% else %}
+    <H1 align="center">ตารางเรียน</H1><br><br>
+    {% endif %}
+</div>
+
+{% if session['seat'] == 'student' %}
+
+<div align="center">
+    <form action="{{url_for('sendLine')}}" method="POST">
+        <label for="reason">เหตุผลการขอนัดพบ</label><br>
+
+        <input type="hidden" name="id" value="{{info.0}}">
+
+        <select name="reason" onchange='CheckChoice(this.value);'>
+            <option value="">เลือก</option>
+            <option>ปรึกษา/สอบถาม เกี่ยวกับรายวิชา</option>
+            <option>ปรึกษา/สอบถาม โครงงาน</option>
+            <option>ขอพบเพื่อเซ็นเอกสาร</option>
+            <option>ขอปรึกษาส่วนตัว</option>
+            <option value="others">อื่น ๆ (เลือกเพื่อระบุ)</option>
+        </select><br>
+
+        <input type="text" name="reason" id="reason" style='display:none;' />
+
+        <br><br><label for="time">ขอพบ ณ เวลา </label>
+        <input type="time" id="time" name="attime"> <br><br><br>
+
+        ใช้ระยะเวลา
+        <select name="duration" id="dur">
+            <option value="2-5 นาที">2 - 5 นาที</option>
+            <option value="5 - 15 นาที">5 - 15 นาที</option>
+            <option value="15 - 30 นาที">15 - 30 นาที</option>
+            <option value="30 - 1 ชม.">30 - 1 ชม.</option>
+            <option value="1 + ชม.">1 + ชม.</option>
+        </select>
+        <br><br><br>
+        <button type="submit" class="btn btn-success" id="send">ส่งคำขอ</button>
+    </form>
+</div>
+<br><br><br>
+
+{% else %}
+
+<div align="center">
+    <form action="{{url_for('sendLine')}}" method="POST">
+        <label for="reason">เหตุผล</label><br>
+
+        <input type="hidden" name="id" value="{{info.0}}">
+
+        <select name="reason" onchange='CheckChoice(this.value);'>
+            <option value="">เลือก</option>
+            <option>ลากิจ/ลาป่วย</option>
+            <option>ยกคลาส</option>
+            <option>ติดประชม</option>
+            <option value="others">อื่น ๆ (เลือกเพื่อระบุ)</option>
+        </select><br><br>
+
+        <input type="text" name="reason" id="reason" style='display:none;' />
+        ใช้ระยะเวลา
+
+
+        <select name="duration" id="dur">
+            <option value="">เลือก</option>
+            <option value="2-5 นาที">2 - 5 นาที</option>
+            <option value="5 - 15 นาที">5 - 15 นาที</option>
+            <option value="15 - 30 นาที">15 - 30 นาที</option>
+            <option value="30 - 1 ชม.">30 - 1 ชม.</option>
+            <option value="1 + ชม.">1 + ชม.</option>
+            <option value="ทั้งวัน">ทั้งวัน</option>
+        </select>
+        <br><br><br>
+        <button type="submit" class="btn btn-success" id="send">ส่งคำขอ</button>
+    </form>
+</div>
+<br><br><br>
+{% endif %}
+
+
+{% endblock %}

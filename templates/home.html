@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div align ="center" >
+<form action="" method="POST">
+    <label for="reason">เหตุผลการขอนัดพบ</label><br>
+    <select name="reason" onchange='CheckColors(this.value);'>
+        <option>เลือก</option>
+        <option value="ปรึกษา/สอบถาม เกี่ยวกับรายวิชา">ปรึกษา/สอบถาม เกี่ยวกับรายวิชา</option>
+        <option value="ปรึกษา/สอบถาม เกี่ยวกับรายวิชา">ปรึกษา/สอบถาม โครงงาน</option>
+        <option value="ขอพบเพื่อเซ็นเอกสาร">ขอพบเพื่อเซ็นเอกสาร</option>
+        <option value="ปรึกษาส่วนตัว">ขอปรึกษาส่วนตัว</option>
+        <option value="others">อื่น ๆ (เลือกเพื่อระบุ)</option>
+    </select><br>
+
+    <input type="text" name="reason" id="reason" style='display:none;'/>
+    <br><br><label for="time">ขอพบ ณ เวลา  </label>
+    <input type="time" id="time" name="time"> <br><br><br>
+    
+    ใช้ระยะเวลา
+    <select name="time">
+        <option value="2-5 นาที">2 - 5 นาที</option>
+        <option value="5 - 15 นาที">5 - 15 นาที</option>
+        <option value="15 - 30 นาที">15 - 30 นาที</option>
+        <option value="30 - 1 ชม.">30 - 1 ชม.</option>
+        <option value="1 + ชม.">1 + ชม.</option>
+    </select>
+    <br><br><br>
+    <button type="button" class="btn btn-success">ส่งคำขอ</button>
+</form>
+</div>
+
+
+
+
+{% endblock %}

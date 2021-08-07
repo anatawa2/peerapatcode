@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>สร้างโปรไฟล์</h2>
+        <form action="{{url_for('insertData')}}" method="POST">
+            <div class="form-group">
+                <label for="fname">Email</label>
+                <input type="text" class="form-control" name="email">
+            </div>
+            <div class="form-group">
+                <label for="fname">ชื่อ</label>
+                <input type="text" class="form-control" name="fname">
+            </div>
+            <div class="form-group">
+                <label for="fname">นามสกุล</label>
+                <input type="text" class="form-control" name="lname">
+            </div>
+            <div class="form-group">
+                <label for="fname">เบอร์โทรศัพท์</label>
+                <input type="text" class="form-control" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="fname">Password</label>
+                <input type="text" class="form-control" name="password">
+            </div>
+            <a class="btn btn-success" href="/">กลับหน้าแรก</a>
+            <button type="submit" class="pull-right btn btn-primary">บันทึก</button>
+        </form>
+    </div>
+
+{% endblock %}

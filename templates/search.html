@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+{% block title %} ค้นหา {% endblock %}
+
+{% block content %}
+    <div align="center">
+        <div style="width:500px">
+            <div style="margin-top:20px; text-align:left">
+                <p align="center">
+                 <br><h1>ค้นหารายชื่อ</h1>
+                </p>
+                <form method="GET" action="">
+                    <input type="text" name="search" id="search_box" class='search_box' />
+                    <input type="submit" value="ค้นหา" class="search_button" /><br />
+                    <span style="color:#666666; font-size:14px; font-family:Arial, Helvetica, sans-serif;"><b>Ex : สมชาย</b>
+                        </span>
+                </form>
+            </div>
+            <div>
+                <div id="searchword">รายชื่อที่ค้นพบ สำหรับ <span class="searchword"></span></div>
+                <div id="flash"></div>
+                <ol id="insert_search" class="update"></ol>
+            </div>
+        </div>
+    </div>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+            color: #fe6f41;
+            text-decoration: none
+        }
+
+        a:hover {
+            color: #9a0bec;
+            text-decoration: underline;
+        }
+
+        #search_box {
+            padding: 3px;
+            border: solid 1px #666666;
+            width: 400px;
+            height: 45px;
+            font-size: 18px;
+            
+        }
+
+        .search_button {
+            height: 50px;
+            border: #fe6f41 solid 1px;
+            padding-left: 9px;
+            padding-right: 9px;
+            padding-top: 9px;
+            padding-bottom: 9px;
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            
+        }
+
+        ol.update {
+            list-style: none;
+            font-size: 1.1em;
+            margin-top: 20px;
+            padding-left: 0;
+        }
+
+        #flash {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        #searchword {
+            text-align: left;
+            margin-top: 20px;
+            display: none;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            color: #000;
+        }
+
+        .searchword {
+            font-weight: bold;
+            color: #fe6f41;
+        }
+
+        ol.update li {
+            border-bottom: #dedede dashed 1px;
+            text-align: left;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        ol.update li:first-child {
+            border-top: #dedede dashed 1px;
+            text-align: left
+        }
+    </style>
+{% endblock %}
