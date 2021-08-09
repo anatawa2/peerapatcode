@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<style>
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+
+<form action="/registed" method="POST">
+
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Username</label>
+        {% if session['temp'] == 'yt' %}
+        <input type="hidden" name="status" value="youtuber">
+        {% else %}
+        <input type="hidden" name="status" value="sponsor">
+        {% endif %}
+        <input type="username" class="form-control" name="username">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" name="password">
+    </div>
+    {% if session['temp'] == 'yt' %}
+    <div class="mb-3">
+        <label class="form-label">Channel Name</label>
+        <input type="text" class="form-control" name="fullname">
+    </div>
+    {% else %}
+    <div class="mb-3">
+        <label class="form-label">Company Name</label>
+        <input type="text" class="form-control" name="fullname">
+    </div>
+    {% endif %}
+    <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input type="tel" class="form-control" name="phone">
+    </div>
+
+    {% with msg = get_flashed_messages() %}
+    {% if msg %}
+    <ul>
+        {% for message in msg %}
+        <h4 style="color: #ff0000;">{{ message }}</h4>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <button type="submit" class="btn btn-info" onclick="return confirm('คุณแน่ใจหรือไม่ ?')">Submit</button>
+</form>
+
+
+
+{% endblock %}

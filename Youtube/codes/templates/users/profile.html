@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+{% block title %} My Profile {% endblock %}
+
+{% block content %}
+<style>
+    .pf {
+        vertical-align: middle;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+    }
+</style>
+
+
+<br><br>
+<h2>แก้ไขข้อมูลส่วนตัว :</h2>
+<br>
+<div class="container">
+
+    <br>
+
+    <form action="/profile/update" method="POST">
+        <div class="form-group">
+            {% if session['status'] == "youtuber" %}
+            <label>Youtube Channel :</label>
+            {% else %}
+            <label>Company Name :</label>
+            {% endif %}
+            <input type="hidden" name="id" value="{{data.id}}">
+            <input type="text" class="form-control" name="fullname" value="{{data.fullname}}">
+        </div>
+        <div class="form-group">
+            <label>Description :</label>
+            <input type="text" class="form-control" name="desc" value="{{data.desc}}">
+        </div>
+        <div class="form-group">
+            <label>Phone :</label>
+            <input type="text" class="form-control" name="phone" value="{{data.phone}}">
+        </div>
+        <div class="form-group">
+            <label>Password :</label>
+            <input type="text" class="form-control" name="password" value="{{data.password}}">
+        </div>
+        <br>
+        <b>
+            {% with msg = get_flashed_messages() %}
+            {% if msg %}
+            <ul>
+                {% for message in msg %}
+                <h4 style="color: #ff0000;">{{ message }}</h4>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </b>
+        <div class="form-group">
+            <br><button type="submit" class="btn btn-info">บันทึกข้อมูล</button>
+        </div>
+    </form>
+</div>
+<br><br><br>
+
+
+{% endblock %}
