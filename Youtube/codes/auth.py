@@ -12,15 +12,16 @@ def index():
 
     if 'loggedin' not in session:
         session['temp'] = ''
-        return render_template('/conn/login.html')
+        return render_template('/login.html')
 
-    return render_template('/users/search.html')
+    return render_template('/search.html')
 
 
 # SELECT ROLE
 @users.route('/register', methods=['GET'])
 def register():
-    return render_template('/conn/register.html')
+    session['temp'] = ''
+    return render_template('/register.html')
 
 
 # ROLE
@@ -30,12 +31,12 @@ def usersRegister(choice='NO'):
     if choice == 'youtuber':
         # TRIGGER TYPE
         session['temp'] = 'yt'
-        return render_template('/conn/registerform.html')
+        return render_template('/registerform.html')
 
     elif choice == 'sponsor':
-        return render_template('/conn/registerform.html')
+        return render_template('/registerform.html')
 
-    return render_template('/conn/register.html')
+    return render_template('/register.html')
 
 
 # REGISTED
@@ -55,11 +56,11 @@ def tosubmit():
 
         if error is None:
             Conn.toRegister(username, password, fullname, phone, status)
-            return render_template('/users/search.html')
+            return render_template('/search.html')
 
         flash(error)
 
-    return render_template('/conn/registerform.html',)
+    return render_template('/registerform.html',)
 
 
 # LOGIN
@@ -83,17 +84,17 @@ def login():
                 print(User)
                 session['id'] = User.id
                 session['loggedin'] = True
-                return render_template('/users/search.html')
+                return render_template('/search.html')
 
             flash(error)
          
         return redirect(url_for('users.index'))
 
-    return render_template('/users/search.html')
+    return render_template('/search.html')
 
 
 # LOGOUT
 @users.route('/logout')
 def logout():
     session.clear()
-    return render_template('/conn/login.html')
+    return render_template('/login.html')

@@ -12,9 +12,9 @@ def myProfile():
     if 'loggedin' in session:
         profile = Conn.toProfile(session['id'])
         session['status'] = profile.status
-        return render_template('/users/profile.html', data=profile)
+        return render_template('/profile.html', data=profile)
 
-    return render_template('/conn/login.html')
+    return render_template('/login.html')
 
 
 @profile.route('/update', methods=['POST'])
@@ -29,4 +29,3 @@ def myUpdate():
         updated = Conn.toUpdate(a,b,c,d,e)
         flash('Updated')
         return redirect(url_for('profile.myProfile', data = updated))
-        #return render_template('/users/profile.html',data = updated)

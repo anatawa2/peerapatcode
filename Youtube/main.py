@@ -1,6 +1,6 @@
 from app import app, db
 import views
-from codes.blueprint import profile 
+from codes.profile import profile 
 from codes.auth import users
 
 app.register_blueprint(profile, url_prefix='/profile')
