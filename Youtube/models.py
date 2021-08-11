@@ -1,3 +1,4 @@
+from sqlalchemy.sql.elements import Null
 from app import db
 from sqlalchemy import or_, and_
 
@@ -15,7 +16,7 @@ class Post(db.Model):
 class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100))
+    username = db.Column(db.String(100),nullable=False)
     password = db.Column(db.String(100))
     fullname = db.Column(db.String(100))
     desc = db.Column(db.Text)
@@ -23,5 +24,6 @@ class User(db.Model):
     phone = db.Column(db.Integer)
     pay_rate = db.Column(db.String(150))
     tag = db.Column(db.String(200))
+
     def __repr__(self):
-        return '<User id: {self.id}, username: {self.username}, password: {self.password}, fullname: {self.fullname}, desc: {self.desc}, phone: {self.phone}, pay_rate: {self.pay_rate}, status: {self.status}>'
+        return '<User id: {self.id}, username: {self.username}, password: {self.password}, fullname: {self.fullname}, desc: {self.desc}, phone: {self.phone}, pay_rate: {self.pay_rate}, status: {self.status},  tag: {self.tag}>'

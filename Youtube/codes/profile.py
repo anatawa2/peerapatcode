@@ -1,46 +1,39 @@
 from flask import Blueprint
-from flask import render_template, request, flash, session , url_for, redirect
-
+from flask import render_template, request, flash, session, url_for, redirect
 from views import Conn
-
-profile = Blueprint('profile', __name__, template_folder='templates')
-
-
-# PROFILE
-@profile.route('/')
-def myProfile():
-
-    if 'loggedin' in session:
-        profile = Conn.toProfile(session['id'])
-        session['status'] = profile.status
-        return render_template('/profile.html', data=profile)
-
-    return render_template('/login.html')
+from flask.views import View
 
 
-# UPDATE PROFILE
-@profile.route('/update', methods=['POST'])
-def myUpdate():
+class MyProfile(View):
+    def dispatch_request(self):
+        if 'loggedin' in session:
+            profile = Conn.toProfile(session['id'])
+            session['status'] = profile.status
 
-    if request.method == "POST":
-        a  = request.form['id']
-        b = request.form['fullname']
-        c = request.form['desc']
-        d = request.form['phone']
-        e = request.form['password']
-        updated = Conn.toUpdate(a,b,c,d,e)
-        flash('Updated')
-        return redirect(url_for('profile.myProfile', data = updated))
+            return render_template('/profile.html', data=profile)
+
+        return render_template('/login.html')
 
 
-# SEARCH 
-@profile.route('/search', methods=['GET'])
-def search():
-    return render_template('search.html')
+class UpdateProfile(View):
+    def dispatch_request(self):
+        if request.method == "POST":
+            a = request.form['id']
+            b = request.form['fullname']
+            c = request.form['desc']
+            d = request.form['phone']
+            e = request.form['password']
+            updated = Conn.toUpdate(a, b, c, d, e)
+            flash('Updated')
+        return redirect(url_for('profile', data=updated))
 
 
+class SearchProfile(View):    
+    def dispatch_request(self):
+        return render_template('search.html')
 
-# TAG
-@profile.route('/tag', methods=['GET'])
-def tag():
-    return render_template('tag.html')
+
+class SearchByTag(View):    
+    def dispatch_request(self):
+        return render_template('tag.html')
+        
