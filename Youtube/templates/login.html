@@ -13,18 +13,19 @@
             <label for="fname">Password</label>
             <input type="password" class="form-control" name="password">
             <a class="" href="/register">ลงทะเบียนเข้าใช้งาน</a><br>
-        </div>
-        {% with msg = get_flashed_messages() %}
-        {% if msg %}
-        <ul>
-            {% for message in msg %}
-            <h4 style="color: #ff0000;">{{ message }}</h4>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
+            <br>
+            <h4 style="color: #52cc66;">{{msg}}</h4>
+            {% with msg = get_flashed_messages() %}
+            {% if msg %}
+            <ul>
+                {% for message in msg %}
+                <h4 style="color: #ff0000;">{{ message }}</h4>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
 
-        <button type="submit" class="btn btn-info" id="send">เข้าสู่ระบบ</button>
+            <button type="submit" class="btn btn-info" id="send">เข้าสู่ระบบ</button>
     </form>
 </div>
 {% endblock %}

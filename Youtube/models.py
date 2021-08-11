@@ -22,6 +22,6 @@ class User(db.Model):
     status = db.Column(db.String(20))
     phone = db.Column(db.Integer)
     pay_rate = db.Column(db.String(150))
-
+    tag = db.Column(db.String(200))
     def __repr__(self):
-        return '<Youtuber id: {self.id}, username: {self.username}, password: {self.password}, fullname: {self.fullname}, desc: {self.desc}, phone: {self.phone}, pay_rate: {self.pay_rate}, status: {self.status}>'
+        return '<User id: {self.id}, username: {self.username}, password: {self.password}, fullname: {self.fullname}, desc: {self.desc}, phone: {self.phone}, pay_rate: {self.pay_rate}, status: {self.status}>'

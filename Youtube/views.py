@@ -8,9 +8,12 @@ from models import *
 
 class Conn():
 
+    def toCheck(a):
+        username = db.session.query(User).filter(User.username == a).first()
+        return username
+
     def toLogin(a, b):
-        username = db.session.query(User).filter(
-            and_(User.username == a, User.password == b)).first()
+        username = db.session.query(User).filter(and_(User.username == a, User.password == b)).first()
         return username
 
     def toRegister(a, b, c, d, e):

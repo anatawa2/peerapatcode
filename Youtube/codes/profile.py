@@ -6,6 +6,7 @@ from views import Conn
 profile = Blueprint('profile', __name__, template_folder='templates')
 
 
+# PROFILE
 @profile.route('/')
 def myProfile():
 
@@ -17,6 +18,7 @@ def myProfile():
     return render_template('/login.html')
 
 
+# UPDATE PROFILE
 @profile.route('/update', methods=['POST'])
 def myUpdate():
 
@@ -29,3 +31,16 @@ def myUpdate():
         updated = Conn.toUpdate(a,b,c,d,e)
         flash('Updated')
         return redirect(url_for('profile.myProfile', data = updated))
+
+
+# SEARCH 
+@profile.route('/search', methods=['GET'])
+def search():
+    return render_template('search.html')
+
+
+
+# TAG
+@profile.route('/tag', methods=['GET'])
+def tag():
+    return render_template('tag.html')

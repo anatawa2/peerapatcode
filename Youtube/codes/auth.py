@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import render_template, request, flash, session , url_for, redirect
+from flask import render_template, request, flash, session, url_for, redirect
 
 from views import Conn
 
@@ -14,7 +14,7 @@ def index():
         session['temp'] = ''
         return render_template('/login.html')
 
-    return render_template('/search.html')
+    return render_template('/index.html')
 
 
 # SELECT ROLE
@@ -50,13 +50,18 @@ def tosubmit():
         fullname = request.form['fullname']
         phone = request.form['phone']
         status = request.form['status']
-
+        check =  Conn.toCheck(username)
         if not username or not password or not fullname or not phone:
-            error = 'Filllllllll'
+            error = 'Fill out the form'
+
+        # check if account already exists
+        if username == check.username:
+            error = 'Username already exists!'    
 
         if error is None:
             Conn.toRegister(username, password, fullname, phone, status)
-            return render_template('/search.html')
+            msg = 'Register done!'
+            return render_template('/login.html', msg=msg)
 
         flash(error)
 
@@ -75,7 +80,7 @@ def login():
             User = Conn.toLogin(username, password)
 
             if not username or not password:
-                error = 'Filllllllll'
+                error = 'Fill out the form'
 
             if User is None:
                 error = 'Incorrect username.'
@@ -84,13 +89,13 @@ def login():
                 print(User)
                 session['id'] = User.id
                 session['loggedin'] = True
-                return render_template('/search.html')
+                return render_template('/index.html')
 
             flash(error)
-         
+
         return redirect(url_for('users.index'))
 
-    return render_template('/search.html')
+    return render_template('/index.html')
 
 
 # LOGOUT
