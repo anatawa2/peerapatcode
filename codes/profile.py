@@ -8,7 +8,7 @@ class MyProfile(View):
     def dispatch_request(self):
         if 'loggedin' in session:
             profile = Conn.toProfile(session['id'])
-            session['status'] = profile.status
+            session['role'] = profile.role
 
             return render_template('/profile.html', data=profile)
 
@@ -36,4 +36,9 @@ class SearchProfile(View):
 class SearchByTag(View):    
     def dispatch_request(self):
         return render_template('tag.html')
+
+class visit(View):
+    def dispatch_request(self):
+
+        return render_template('visit.html', )
         

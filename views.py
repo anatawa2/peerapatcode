@@ -17,7 +17,7 @@ class Conn():
         return username
 
     def toRegister(a, b, c, d, e):
-        user = User(username=a, password=b, fullname=c, phone=d, status=e)
+        user = User(username=a, password=b, fullname=c, phone=d, role=e)
         db.session.add(user)
         db.session.commit()
 

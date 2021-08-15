@@ -20,6 +20,7 @@ app.add_url_rule('/profile/', view_func=MyProfile.as_view('profile'))
 app.add_url_rule('/profile/update', view_func=UpdateProfile.as_view('update'),methods = ["POST"])
 app.add_url_rule('/search', view_func=SearchProfile.as_view('search'))
 app.add_url_rule('/tag', view_func=SearchByTag.as_view('tag'))
+app.add_url_rule('/visit', view_func=visit.as_view('visit'))
 
 
 

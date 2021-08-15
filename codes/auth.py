@@ -37,7 +37,7 @@ class RoleRegister(View):
             password = request.form['password']
             fullname = request.form['fullname']
             phone = request.form['phone']
-            status = request.form['status']
+            role = request.form['role']
             check = Conn.toCheck(username)
 
             if not username or not password or not fullname or not phone:
@@ -47,9 +47,9 @@ class RoleRegister(View):
                 error = 'Username already exists!'
 
             if error is None:
-                Conn.toRegister(username, password, fullname, phone, status)
+                Conn.toRegister(username, password, fullname, phone, role)
                 flash('Register done!')
-                return redirect(url_for('login'))
+                return redirect(url_for('index'))
 
             flash(check)
 

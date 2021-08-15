@@ -15,9 +15,9 @@
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Username</label>
         {% if session['temp'] == 'yt' %}
-        <input type="hidden" name="status" value="youtuber">
+        <input type="hidden" name="role" value="youtuber">
         {% else %}
-        <input type="hidden" name="status" value="sponsor">
+        <input type="hidden" name="role" value="sponsor">
         {% endif %}
         <input type="username" class="form-control" name="username">
     </div>
