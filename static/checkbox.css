@@ -1,5 +1,3 @@
-/* CSS rules are kept repetitive so that you can get CSS rules for each button easily :) */
-
 *
 {
     user-select: none;
@@ -39,15 +37,15 @@ body
     height: 140px;
     box-sizing: border-box;
 }
-
+/* 
 .button-cover
 {
-    height: 100px;
+    height: 50px;
     margin: 30px;
     background-color: #fff;
     box-shadow: 0 10px 20px -8px #c5d6d6;
     border-radius: 4px;
-}
+} */
 
 .button-cover:before
 {
@@ -120,7 +118,7 @@ body
 #button-8 .knobs:before, #button-8 .knobs:after, #button-8 .knobs span
 {
     position: absolute;
-    top: 4px;
+    top: 3px;
     width: 30px;
     height: 10px;
     font-size: 10px;
@@ -143,8 +141,8 @@ body
 {
     content: 'YES';
     left: 42px;
-    color: #fff;
-    background-color: #f44336;
+    color: rgb(255, 255, 255);
+    background-color: #43c262;
     opacity: 0;
 }
 
@@ -172,7 +170,7 @@ body
 
 #button-8 .checkbox:checked + .knobs span
 {
-    background-color: #fcebeb;
+    background-color: #7cf89b;
     transform: scale(4);
 }
 

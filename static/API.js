@@ -1,25 +1,38 @@
-function toSave() {
-    titleChannel = $('#field-titleChannel').val();
-    subscriberCount = $('#field-subscriberCount').val();
-    viewCount = $('#field-viewCount').val();
-    videoCount = $('#field-videoCount').val();
-    publishedAt = $('#field-publishedAt').val();
-    var lang = $('#field-lang').val();
-
-    $.ajax({
-        type: 'POST',
-        url: "https:/test/User_update",
-        data: {
-            "titleChannel": titleChannel,
-            "subscriberCount": subscriberCount,
-            "viewCount": viewCount,
-            "videoCount": videoCount,
-            "publishedAt": publishedAt,
-            "lang": lang
-        },
-        dataType: "json"
-    }).done(function () {
-        $('#modal-1').modal('hide');
-        table.row.data([titleChannel, subscriberCount, viewCount, videoCount, publishedAt, lang, UserIndex_CreateEditButton(titleChannel, subscriberCount, viewCount, videoCount, publishedAt, lang), UserIndex_CreateDeleteButton(val_no)], $('#' + tempUpdate));
-    });
+function commas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+
+
+var APIKey = 'AIzaSyChexdcc_Ucu8qQUlFZyXDbhfiiCIFfS-A';
+var Userid = 'UC0BletW9phE4xHFM44q4qKA';
+var titleChannel = document.getElementById('titleChannel');
+var subscriberCount = document.getElementById('subscriberCount');
+var viewCount = document.getElementById('viewCount');
+var videoCount = document.getElementById('videoCount');
+var publishedAt = document.getElementById('publishedAt');
+var lang = document.getElementById('lang');
+var picChannel = document.getElementById('picChannel');
+
+let getdata = () => {
+    fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${Userid}&key=${APIKey}`)
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            console.log(data);
+            titleChannel.innerHTML = data["items"][0].snippet.localized.title;
+            subscriberCount.innerHTML = commas(data["items"][0].statistics.subscriberCount);
+            viewCount.innerHTML = commas(data["items"][0].statistics.viewCount);
+            videoCount.innerHTML = commas(data["items"][0].statistics.videoCount);
+            publishedAt.innerHTML = data["items"][0].snippet.publishedAt;
+            lang.innerHTML = data["items"][0].snippet.country;
+            picChannel.innerHTML = data["items"][0].snippet.thumbnails.high.url;
+
+
+
+
+        })
+}
+
+getdata();

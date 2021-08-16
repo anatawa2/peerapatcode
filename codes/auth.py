@@ -1,6 +1,4 @@
-from flask import Blueprint
 from flask import render_template, request, flash, session, url_for, redirect
-from sqlalchemy.sql.expression import null
 from flask.views import View
 from views import Conn
 
@@ -73,7 +71,7 @@ class LoginForm(View):
                     error = 'Incorrect username.'
 
                 elif error is None:
-                    session['id'] = User.id
+                    session['id'] = User.user_id
                     session['loggedin'] = True
                     return render_template('/index.html')
 

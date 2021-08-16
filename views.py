@@ -22,11 +22,11 @@ class Conn():
         db.session.commit()
 
     def toProfile(a):
-        profile = db.session.query(User).filter(User.id == a).first()
+        profile = db.session.query(User).filter(User.user_id == a).first()
         return profile
 
     def toUpdate(a, b, c, d, e):
-        updated = db.session.query(User).filter(User.id == a).first()
+        updated = db.session.query(User).filter(User.user_id == a).first()
         updated.fullname = b
         updated.desc = c
         updated.phone = d

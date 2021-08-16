@@ -5,11 +5,8 @@
 {% block content %}
 <br>
 <div align="center" class="rounded mx-auto d-block">
-
+    <img src="{{pic}}" alt="pic" style="max-width: 10%">
 </div>
-
-
-
 
 <br>
 <div class="container">
@@ -22,7 +19,7 @@
                 <th>ช่อง</th>
 
                 <th>
-                    <div id="titleChannel"></div>
+                    {{titleChannel}}
                 </th>
 
             </tr>
@@ -31,7 +28,9 @@
         <body>
             <tr>
                 <td>ประเภท</td>
-                <td> </td>
+                <td>
+
+                </td>
             </tr>
         </body>
 
@@ -39,7 +38,7 @@
             <tr>
                 <td>มียอดผติดตาม</td>
                 <td>
-                    <div id="subscriberCount"></div>
+                    {{subscriberCount}}
                 </td>
             </tr>
         </body>
@@ -48,7 +47,7 @@
             <tr>
                 <td>ยอดเข้าชมทั้งหมด</td>
                 <td>
-                    <div id="viewCount"></div>
+                    {{viewCount}}
                 </td>
             </tr>
         </body>
@@ -57,7 +56,7 @@
             <tr>
                 <td>จำนวนคลิปในช่อง</td>
                 <td>
-                    <div id="videoCount"></div>
+                    {{videoCount}}
                 </td>
             </tr>
         </body>
@@ -79,7 +78,7 @@
             <tr>
                 <td>ช่องสร้างเมื่อ</td>
                 <td>
-                    <div id="publishedAt"></div>
+                    {{publishedAt}}
                 </td>
             </tr>
         </tbody>
@@ -87,7 +86,7 @@
             <tr>
                 <td>ประเทศ</td>
                 <td>
-                    <div id="lang"></div>
+                    {{lang}}
                 </td>
             </tr>
         </tbody>
@@ -95,49 +94,5 @@
 </div>
 <br><br>
 
-
-
-
-<script>
-    function commas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
-
-
-    var APIKey = 'AIzaSyChexdcc_Ucu8qQUlFZyXDbhfiiCIFfS-A';
-    var Userid = 'UC0BletW9phE4xHFM44q4qKA';
-    var titleChannel = document.getElementById('titleChannel');
-    var subscriberCount = document.getElementById('subscriberCount');
-    var viewCount = document.getElementById('viewCount');
-    var videoCount = document.getElementById('videoCount');
-    var publishedAt = document.getElementById('publishedAt');
-    var lang = document.getElementById('lang');
-    var picChannel = document.getElementById('picChannel');
-
-    let getdata = () => {
-        fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${Userid}&key=${APIKey}`)
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-                console.log(data);
-                titleChannel.innerHTML = data["items"][0].snippet.localized.title;
-                subscriberCount.innerHTML = commas(data["items"][0].statistics.subscriberCount);
-                viewCount.innerHTML = commas(data["items"][0].statistics.viewCount);
-                videoCount.innerHTML = commas(data["items"][0].statistics.videoCount);
-                publishedAt.innerHTML = data["items"][0].snippet.publishedAt;
-                lang.innerHTML = data["items"][0].snippet.country;
-                picChannel.innerHTML = data["items"][0].snippet.thumbnails.high.url;
-
-
-
-
-            })
-    }
-    
-    getdata();
-
-</script>
 
 {% endblock %}
