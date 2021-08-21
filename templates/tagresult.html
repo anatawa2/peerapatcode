@@ -3,4 +3,11 @@
 
 {% block content %}
 
+{{data}}
+{{data[0]["id"]}}
+
+{%for row in data%}
+<h1>{{row["fullname"]}}</h1>
+{%endfor%}
+
 {% endblock %}

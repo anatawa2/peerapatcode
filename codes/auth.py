@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, session, url_for, redirect
 from flask.views import View
-from views import Conn
-
+from views import *
+from models import *
 
 class IndexView(View):
     def dispatch_request(self):
@@ -9,7 +9,8 @@ class IndexView(View):
             session['temp'] = ''
             return render_template('/login.html')
 
-        return render_template('/index.html')
+        return redirect(url_for('recommended'))
+        #return render_template('/index.html')
 
 
 class RoleRegister(View):
@@ -71,18 +72,16 @@ class LoginForm(View):
                     error = 'Incorrect username.'
 
                 elif error is None:
-                    session['id'] = User.user_id
+                    session['id'] = User.id
                     session['loggedin'] = True
-                    return render_template('/index.html')
+                    return redirect(url_for('recommended'))
 
                 flash(error)
 
             return redirect(url_for('index'))
 
         return render_template('/index.html')
-        
+
     def logout():
         session.clear()
         return render_template('/login.html')
-
-

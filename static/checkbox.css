@@ -34,7 +34,7 @@ body
     display: table-cell;
     position: relative;
     width: 200px;
-    height: 140px;
+    height: 100px;
     box-sizing: border-box;
 }
 /* 
@@ -49,8 +49,6 @@ body
 
 .button-cover:before
 {
-    counter-increment: button-counter;
-    content: counter(button-counter);
     position: absolute;
     right: 0;
     bottom: 0;

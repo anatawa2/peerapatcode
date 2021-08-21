@@ -1,288 +1,240 @@
 {% extends 'layout.html' %}
-{% block head %}
-<link rel="stylesheet" href="{{url_for('static', filename='checkbox.css')}}">{% endblock %}
+{% block head %} {% endblock %}
 {% block title %} ค้นหา {% endblock %}
 
 {% block content %}
-<br>
-<h2 align='center'>เลือกประเภทของช่องคณ</h2>
+<br><br>
 
-<form action="">
-    <div id="app-cover">
-        <div class="row">
-            <div class="toggle-button-cover">
-                <h4> ความบันเทิง</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox" checked>
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4> ครอบครัว</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4>ให้ความร้</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4>ลไฟ์สไตล์</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
+<div class="card-group">
+    <div class="card">
+        <a href="/search/tag/Entertainment">
+            <img src="/static/1.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ความบันเทิง</h5>
         </div>
-        <br>
-        <div class="row">
-            <div class="toggle-button-cover">
-                <h4> ท่องเที่ยว</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox" checked>
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4> สำหรับเด็ก</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4>รีวิว</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4>เทคโนโลยี</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Family">
+            <img src="/static/2.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ครอบครัว</h5>
         </div>
-        <br>
-        <div class="row">
-            <div class="toggle-button-cover">
-                <h4> ภาพยนต์</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox" checked>
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4> อนิเมชั่น</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4>เพลง</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4>ASMR</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Education">
+            <img src="/static/3.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ให้ความร้</h5>
         </div>
-        <br>
-        <div class="row">
-            <div class="toggle-button-cover">
-                <h4> อาหาร</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox" checked>
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4> กีฬา</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4>เกม</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4>ความงาม</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Lifestyle">
+            <img src="/static/4.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ไลฟ์สไตล์</h5>
         </div>
-        <br>
-        <div class="row">
-            <div class="toggle-button-cover">
-                <h4> ซบซิบ</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox" checked>
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4> DIY</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4> ข่าว</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="toggle-button-cover">
-                <h4>Podcast</h4>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox">
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Travel">
+            <img src="/static/2.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ท่องเที่ยว</h5>
         </div>
-        <div class="row">
-            <div class="toggle-button-cover">
-                <h5> แรงบันดาลใจ</h5>
-                <div class="button-cover">
-                    <div class="button r" id="button-8">
-                        <input type="checkbox" class="checkbox" checked>
-                        <div class="knobs">
-                            <span></span>
-                        </div>
-                        <div class="layer"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-         <button type="submit" class="btn btn-outline-success">บันทึก</button>
-     
+    </div>
+</div><br><br>
 
 
-</form>
+
+
+
+<div class="card-group">
+    <div class="card">
+        <a href="/search/tag/Kids">
+            <img src="/static/1.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">สำหรับเด็ก</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Review">
+            <img src="/static/3.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">รีวิว</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Tech">
+            <img src="/static/4.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">เทคโนโลยี</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Movie">
+            <img src="/static/2.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ภาพยนต์</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Animation">
+            <img src="/static/1.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">อนิเมชั่น</h5>
+        </div>
+    </div>
+</div><br><br>
+
+
+
+
+
+
+
+<div class="card-group">
+    <div class="card">
+        <a href="/search/tag/Music">
+            <img src="/static/4.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">เพลง</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/ASMR">
+            <img src="/static/1.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ASMR</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Food">
+            <img src="/static/2.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">อาหาร</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Sport">
+            <img src="/static/3.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">กีฬา</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Game">
+            <img src="/static/3.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">เกม</h5>
+        </div>
+    </div>
+</div><br><br>
+
+
+
+
+
+
+
+<div class="card-group">
+    <div class="card">
+        <a href="/search/tag/Beauty">
+            <img src="/static/2.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ความงาม</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Gossip">
+            <img src="/static/3.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ซบซิบ</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/DIY">
+            <img src="/static/4.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">DIY</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/NEWS">
+            <img src="/static/1.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ข่าว</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/Podcast">
+            <img src="/static/3.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">Podcast</h5>
+        </div>
+    </div>
+</div><br><br>
+
+
+
+  
+
+
+
+<div class="card-group">
+    <div class="card">
+        <a href="/search/tag/Motivation">
+            <img src="/static/2.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">แรงบันดาลใจ</h5>
+        </div>
+    </div>
+    <div class="card">
+        <a href="/search/tag/History">
+            <img src="/static/4.jpg" class="card-img-top" alt="...">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">ประวัติศาสตร์</h5>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+        </div>
+    </div>
+</div><br><br>
+
+
+
+
+
+
 
 
 {% endblock %}
