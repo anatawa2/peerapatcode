@@ -2,12 +2,34 @@
 {% block title %} ค้นหา {% endblock %}
 
 {% block content %}
+<style>
+    .pf {
+        vertical-align: middle;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+    }
+</style>
+ 
 
-{{data}}
-{{data[0]["id"]}}
+{%for row in datas%}
 
-{%for row in data%}
-<h1>{{row["fullname"]}}</h1>
+{% if session['role'] == "youtuber" %} 
+<img src="/static/uploads/{{row['id']}}/{{row['pic']}}" class="pf">
+<br><br>   
+{% else %}
+<img src="{{row['pic']}}" alt="pic" style="max-width: 10%">
+<br><br>
+{%endif%}
+
+
+
+<a href="/visit/{{row['id']}}">{{row["fullname"]}} / {{row["id"]}}</a>
+
+<br><br>
+
+
+
 {%endfor%}
 
 {% endblock %}

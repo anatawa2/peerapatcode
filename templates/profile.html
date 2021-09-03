@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% block head %}
-<link rel="stylesheet" href="{{url_for('static', filename='checkbox.css')}}">{% endblock %}
+<link rel="stylesheet" href="{{url_for('static', filename='/css/Checkbox.css')}}">
+{% endblock %}
 {% block title %} My Profile {% endblock %}
 
 {% block content %}
@@ -13,393 +14,509 @@
     }
 </style>
 
+<br><br><br> 
+<div class='container'>
 
-<br><br>
-<h2>แก้ไขข้อมูลส่วนตัว :</h2>
-<br>
-<div class="container">
-    {% if img %}
-    <img src="/{{img.0}}/{{img.1}}/{{img.2.name}}" class="pf">
-    {% endif %}
+    <br><br>
+    <h2>แก้ไขข้อมูลส่วนตัว :</h2>
     <br>
-    <form action="/profile/upload" enctype="multipart/form-data" method="POST">
-        <input type="file" name="file" /><br>
-        <input type="submit" value="Upload a file" />
-    </form>
-    <br>
+    <div class="container">
 
-    <form action="/profile/update" method="POST">
-        <div class="form-group">
-            {% if session['status'] == "youtuber" %}
-            <label>Youtube Channel :</label>
-            {% else %}
-            <label>Company Name :</label>
-            {% endif %}
-            <input type="hidden" name="id" value="{{data.id}}">
-            <input type="text" class="form-control" name="fullname" value="{{data.fullname}}">
-        </div>
-        <div class="form-group">
-            <label>อธิบายเกี่ยวกับ แชนแนล/องค์กร ของคณ:</label>
-            <input type="text" class="form-control" name="desc" value="{{data.desc}}">
-        </div>
-        <div class="form-group">
-            <label>E-mail :</label>
-            <input type="text" class="form-control" name="email" value="{{data.email}}">
-        </div>
-        <div class="form-group">
-            <label>เรทการรับงาน :</label>
-            <input type="text" class="form-control" name="payrate" value="{{data.pay_rate}}">
-        </div>
-        <div class="form-group">
-            <label>Password :</label>
-            <input type="text" class="form-control" name="password" value="{{data.password}}">
-        </div>
+        {% if session['role'] == "youtuber" %}
+
+        <img src="{{data.pic}}" alt="pic" class='pf'>
         <br>
-        <b>
-            {% with msg = get_flashed_messages() %}
-            {% if msg %}
-            <ul>
-                {% for message in msg %}
-                <h4 style="color: #ff0000;">{{ message }}</h4>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-        </b>
-        <a type="button" class="btn btn-warning btn-xs" data-bs-toggle="modal"
-            data-bs-target="#modaledit{{data.id}}">ตั้งค่าประเภทของช่อง</a>
 
-        <div class="form-group">
-            <br><button type="submit" class="btn btn-info">บันทึกข้อมูล</button>
+        {% else %}
+        <div class="containers">
+            <img src="/static/uploads/{{data.id}}/{{data.pic}}" class="pf">
+
         </div>
-    </form>
 
+        <br>
+        <form action="/profile/upload" enctype="multipart/form-data" method="POST">
+            <input type="file" name="file" /><br>
+            <input type="submit" value="Upload a file" />
+        </form>
 
+        {% endif %}
 
-    <div id="modaledit{{data.id}}" class="modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">เลือกประเภทของช่องคณ</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="/profile/tag" method="POST">
-                        <div class="form-group">
-                            <input type="hidden" name="id" value="{{data.id}}">
-                            <div class="row">
-                                <div class="toggle-button-cover">
-                                    <h6> ความบันเทิง</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox"
-                                                value="Entertainment" {%if tag.1 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> ครอบครัว</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Family" {%if
-                                                tag.2 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> ให้ความร้</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Education"
-                                                {%if tag.3 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> ไลฟ์สไตล์</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Lifestyle"
-                                                {%if tag.4 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="toggle-button-cover">
-                                    <h6> ท่องเที่ยว</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Travel" {%if
-                                                tag.5 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> สำหรับเด็ก</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Kids" {%if
-                                                tag.6 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> รีวิว</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Review" {%if
-                                                tag.7 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> เทคโนโลยี</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Tech" {%if
-                                                tag.8 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="toggle-button-cover">
-                                    <h6> ภาพยนต์</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Movie" {%if
-                                                tag.9 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> อนิเมชั่น</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Animation"
-                                                {%if tag.10 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> เพลง</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Music" {%if
-                                                tag.11 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> ASMR</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="ASMR" {%if
-                                                tag.12 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="toggle-button-cover">
-                                    <h6> อาหาร</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Food" {%if
-                                                tag.13 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> กีฬา</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Sport" {%if
-                                                tag.14 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> เกม</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Game" {%if
-                                                tag.15 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> ความงาม</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Beauty" {%if
-                                                tag.16 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="toggle-button-cover">
-                                    <h6> ซบซิบ</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Gossip" {%if
-                                                tag.17 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> DIY</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="DIY" {%if
-                                                tag.18 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> NEWS</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="NEWS" {%if
-                                                tag.19 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <h6> Podcast</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Podcast" {%if
-                                                tag.20 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="toggle-button-cover">
-                                    <h6> ประวัติศาสตร์</h6>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="Motivation"
-                                                {%if tag.21 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggle-button-cover">
-                                    <p style="font-size:15px"> แรงบันดาลใจ</p>
-                                    <div class="button-cover">
-                                        <div class="button r" id="button-8">
-                                            <input type="checkbox" class="checkbox" name="checkbox" value="History" {%if
-                                                tag.22 %} checked {%endif%}>
-                                            <div class="knobs">
-                                                <span></span>
-                                            </div>
-                                            <div class="layer"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <br>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
-                </div>
+        <form action="/profile/update" method="POST">
+            <div class="form-group">
+                {% if session['role'] == "youtuber" %}
+                <label>Youtube Channel :</label>
+                {% else %}
+                <label>Company Name :</label>
+                {% endif %}
+                <input type="hidden" name="id" value="{{data.id}}">
+                <input type="hidden" name="pic" value="{{api.5}}">
+                <input type="text" class="form-control" name="fullname" value="{{data.fullname}}">
+            </div>
+            {% if session['role'] == "youtuber" %}
+            <div class="form-group">
+                <label>อธิบายเกี่ยวกับแชนแนลของคณ:</label>
+                <input type="text" class="form-control" name="desc" value="{{data.desc}}">
+            </div>
+            <div class="form-group">
+                <label> Channel ID<a
+                        href="https://ultimate.brainstormforce.com/docs/how-to-find-youtube-channel-name-and-channel-id/">คลิก</a>
+                </label>
+                <input type="text" class="form-control" name="id_channel" value="{{data.id_channel}}">
+            </div>
+
+            {% else %}
+            <div class="form-group">
+                <label>อธิบายเกี่ยวกับองค์กรของคณ:</label>
+                <input type="text" class="form-control" name="desc" value="{{data.desc}}">
 
             </div>
+            {% endif %}
+            <div class="form-group">
+                <label>E-mail :</label>
+                <input type="text" class="form-control" name="email" value="{{data.email}}">
+            </div>
+            <div class="form-group">
+                <label>เรทการรับงาน :</label>
+                <input type="text" class="form-control" name="payrate" value="{{data.pay_rate}}">
+            </div>
+            <div class="form-group">
+                <label>Password :</label>
+                <input type="text" class="form-control" name="password" value="{{data.password}}">
+            </div>
+            <br>
+            <b>
+                {% with msg = get_flashed_messages() %}
+                {% if msg %}
+                <ul>
+                    {% for message in msg %}
+                    <h4 style="color: #ff0000;">{{ message }}</h4>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+            </b>
+            <a type="button" class="btn btn-warning btn-xs" data-bs-toggle="modal"
+                data-bs-target="#modaledit{{data.id}}">ตั้งค่าประเภทของช่อง</a>
+
+            <div class="form-group">
+                <br><button type="submit" class="btn btn-info">บันทึกข้อมูล</button>
+            </div>
+        </form>
+
+
+        {% if session["role"] == "youtuber" %}
+        <div id="modaledit{{data.id}}" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">เลือกประเภทของช่องคณ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/profile/tag" method="POST">
+                            <div class="form-group">
+                                <input type="hidden" name="id" value="{{data.id}}">
+                                <div class="row">
+                                    <div class="toggle-button-cover">
+                                        <h6> ความบันเทิง</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox"
+                                                    value="Entertainment" {%if tag.1 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> สขภาพ</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Health"
+                                                    {%if tag.2 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> ให้ความร้</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox"
+                                                    value="Education" {%if tag.3 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> ไลฟ์สไตล์</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox"
+                                                    value="Lifestyle" {%if tag.4 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="toggle-button-cover">
+                                        <h6> ท่องเที่ยว</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Travel"
+                                                    {%if tag.5 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> สำหรับเด็ก</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Kids"
+                                                    {%if tag.6 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> รีวิว</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Review"
+                                                    {%if tag.7 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> เทคโนโลยี</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Tech"
+                                                    {%if tag.8 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="toggle-button-cover">
+                                        <h6> ภาพยนต์</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Movie"
+                                                    {%if tag.9 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> อนิเมชั่น</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox"
+                                                    value="Animation" {%if tag.10 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> เพลง</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Music"
+                                                    {%if tag.11 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> ASMR</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="ASMR"
+                                                    {%if tag.12 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="toggle-button-cover">
+                                        <h6> อาหาร</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Food"
+                                                    {%if tag.13 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> กีฬา</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Sport"
+                                                    {%if tag.14 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> เกม</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Game"
+                                                    {%if tag.15 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> ความงาม</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Beauty"
+                                                    {%if tag.16 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="toggle-button-cover">
+                                        <h6> ซบซิบ</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Gossip"
+                                                    {%if tag.17 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> สิ่งประดิษฐ์</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="DIY" {%if
+                                                    tag.18 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> ศิลปะ</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Art" {%if
+                                                    tag.19 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> Podcast</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Podcast"
+                                                    {%if tag.20 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="toggle-button-cover">
+                                        <p style="font-size:15px"> ประวัติศาสตร์</p>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox"
+                                                    value="Motivation" {%if tag.21 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <p style="font-size:15px"> วิทยาศาสตร์</p>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Science"
+                                                    {%if tag.22 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <p style="font-size:13px"> แรงบันดาลใจ</p>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="History"
+                                                    {%if tag.23 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <p style="font-size:15px"> ข่าว</p>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="NEWS"
+                                                    {%if tag.24 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
         </div>
+        {% else %}
+
+        <div id="modaledit{{data.id}}" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">เลือกประเภทของช่องคณ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/profile/tag" method="POST">
+                            <div class="form-group">
+                                <input type="hidden" name="id" value="{{data.id}}">
+                                <div class="row">
+                                    <div class="toggle-button-cover">
+                                        <h6> สินค้า</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Product"
+                                                    {%if tag.25 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-button-cover">
+                                        <h6> บริการ</h6>
+                                        <div class="button-cover">
+                                            <div class="button r" id="button-8">
+                                                <input type="checkbox" class="checkbox" name="checkbox" value="Service"
+                                                    {%if tag.26 %} checked {%endif%}>
+                                                <div class="knobs">
+                                                    <span></span>
+                                                </div>
+                                                <div class="layer"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        {% endif %}
+
     </div>
+    <br><br><br>
 
 </div>
-<br><br><br>
-
-
 {% endblock %}

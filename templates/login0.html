@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>ลงชื่อเข้าใช้งาน</h2>
+    <form action="/login" method="POST">
+        <div class="form-group">
+            <label for="fname">Username</label>
+            <input type="text" class="form-control" name="username">
+            
+            <label for="fname">Password</label>
+            <input type="password" class="form-control" name="password">
+            <a class="" href="/register">ลงทะเบียนเข้าใช้งาน</a><br>
+            <br>
+            <h4 style="color: #52cc66;">{{msg}}</h4>
+            {% with msg = get_flashed_messages() %}
+            {% if msg %}
+            <ul>
+                {% for message in msg %}
+                <h4 style="color: #ff0000;">{{ message }}</h4>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            
+            <button type="submit" class="btn btn-info" id="send">เข้าสู่ระบบ</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

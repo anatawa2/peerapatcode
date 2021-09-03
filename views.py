@@ -1,6 +1,5 @@
 from app import app, db
-from models import * 
-
+from models import *
 
 
 # @app.route('/')
@@ -15,12 +14,11 @@ class Conn():
         return username
 
     def toLogin(a, b):
-        username = db.session.query(User).filter(
-            and_(User.username == a, User.password == b)).first()
+        username = db.session.query(User).filter(and_(or_(User.username == a,User.email == a), User.password == b)).first()
         return username
 
     def toRegister(a, b, c, d, e):
-        user = User(username=a, password=b, fullname=c, phone=d, role=e)
+        user = User(username=a, password=b, fullname=c, email=d, role=e)
         db.session.add(user)
         db.session.commit()
 
@@ -28,7 +26,18 @@ class Conn():
         profile = db.session.query(User).filter(User.id == a).first()
         return profile
 
-    def toUpdate(a, b, c, d, e, f):
+    def toUpdateYT(a, b, c, d, e, f, g, h):
+        updated = db.session.query(User).filter(User.id == a).first()
+        updated.fullname = b
+        updated.desc = c
+        updated.email = d
+        updated.password = e
+        updated.pay_rate = f
+        updated.pic = g
+        updated.id_channel = h
+        db.session.commit()
+
+    def toUpdateSP(a, b, c, d, e, f):
         updated = db.session.query(User).filter(User.id == a).first()
         updated.fullname = b
         updated.desc = c
@@ -37,41 +46,37 @@ class Conn():
         updated.pay_rate = f
         db.session.commit()
 
-    def uploadImg(a, b,):
-        stmt = Img(owner=a, name=b)
-        db.session.add(stmt)
+    def toSearch(a):
+        fullname = db.session.query(User).filter(User.fullname == a).first()
+        return fullname
+
+    def uploadImg(a, b): 
+        user = db.session.query(User).filter(User.id == a).first() 
+        user.pic = b
         db.session.commit()
 
-        # img = db.session.query(Img).filter(Img.owner == a).first()
-        # return img
-    
-    def getImg(me):
-        maindir = 'static/uploads'
-        owner = str(me)
-        img = db.session.query(Img).filter(Img.owner == me).first()
-
-        return [maindir,owner,img]
+        return user
  
-
+ 
 
 class Style():
     # selectTag = ['Entertainment', 'History']
     def setTag(ID, selectTag):
 
-        for count in range(23):
-            stmt2 = (delete(style).where(style.c.user_id == ID, style.c.tag_id == count+1))
-            db.session.execute(stmt2)
+        for count in range(27):
+            stmt1 = (delete(style).where(style.c.user_id == ID, style.c.tag_id == count+1))
+            db.session.execute(stmt1)
             db.session.commit()
 
         for tag in selectTag:
-            keyid = which(tag)
-            stmt1 = style.insert().values(user_id=ID, tag_id=keyid)
-            db.session.execute(stmt1)
+            keyid = name2id(tag)
+            stmt2 = style.insert().values(user_id=ID, tag_id=keyid)
+            db.session.execute(stmt2)
             db.session.commit()
 
     # SHOW CHECKBOX
 
-    def showTag(a):
+    def showPos(a):
         stmt = db.session.query(style).filter(style.c.user_id == a).all()
         data = []
         for tag in stmt:
@@ -83,35 +88,54 @@ class Style():
     # find User by tag_id
 
     def byTag(a):
-        data = db.session.query(User).join(
-            style).filter(style.c.tag_id == a).all()
+        data = db.session.query(User).join(style).filter(style.c.tag_id == a).all()
         return data
 
 
 # TAG position
 # input =  [1,2,3,4]
 def posTag(input):
-    temp = [0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0]
+    position = [0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0,
+                0, 0, 0]
     for x in input:
-        temp[x] = 1
-    return temp
+        position[x] = 1
+    return position
 
 
 # convert tag_name to tag_id
-def which(style):
-    for k, v in datas.items():
+def name2id(style):   
+    for k, v in datas.items():  
         if style == k:
-            return v
+            return v  # [1 ,6] 
+
+# convert tag_id to tag_name 
+def id2name(style):   
+    for k, v in datas.items():  
+        if style == v:
+            return k  # ["Enteraintment" ,"Kids"]
+      
+
+def posToId(input):   # [1,0,1,0,1]
+    c = 0
+    data = []
+    for i in input:
+        if i == 1:
+            data.append(c)
+        c += 1 
+
+    return data       # [1,3,5]
+            
+
 
 
 # TAG
 global datas
 datas = {
     "Entertainment": 1,
-    "Family": 2,
+    "Health": 2,
     "Education": 3,
     "Lifestyle": 4,
     "Travel": 5,
@@ -131,9 +155,14 @@ datas = {
     "Beauty": 16,
     "Gossip": 17,
     "DIY": 18,
-    "NEWS": 19,
+    "Art": 19,
     "Podcast": 20,
 
     "Motivation": 21,
-    "History": 22
+    "History": 22,
+    "Science": 23,
+    "NEWS": 24,
+    "Product": 25,
+
+    "Service": 26
 }

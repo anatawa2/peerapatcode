@@ -35,18 +35,18 @@ class RoleRegister(View):
             username = request.form['username']
             password = request.form['password']
             fullname = request.form['fullname']
-            phone = request.form['phone']
+            email = request.form['email']
             role = request.form['role']
             check = Conn.toCheck(username)
 
-            if not username or not password or not fullname or not phone:
+            if not username or not password or not fullname or not email:
                 error = 'Fill out the form'
 
             if check:
                 error = 'Username already exists!'
 
             if error is None:
-                Conn.toRegister(username, password, fullname, phone, role)
+                Conn.toRegister(username, password, fullname, email, role)
                 flash('Register done!')
                 return redirect(url_for('index'))
 
@@ -68,12 +68,13 @@ class LoginForm(View):
                 if not username or not password:
                     error = 'Fill out the form'
 
-                if User is None:
-                    error = 'Incorrect username.'
+                elif User is None:
+                    error = 'Incorrect User or Password.'
 
                 elif error is None:
                     session['id'] = User.id
                     session['loggedin'] = True
+                    session['role'] = User.role
                     return redirect(url_for('recommended'))
 
                 flash(error)

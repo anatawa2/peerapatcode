@@ -3,11 +3,20 @@
 {% block head %} {% endblock %}
 
 {% block content %}
+<style>
+    .pf {
+        vertical-align: middle;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+    }
+</style>
+
 <br>
 <div align="center" class="rounded mx-auto d-block">
-    <img src="{{APIs.6}}" alt="pic" style="max-width: 10%">
+    <img src="/static/uploads/{{data.id}}/{{data.pic}}" class="pf">
+    <br>
 </div>
-
 <br>
 <div class="container">
 
@@ -15,10 +24,10 @@
 
         <body>
             <tr>
-                <th>ช่อง</th>
+                <th>ชื่อบริษัท</th>
 
                 <th>
-                    {{APIs.0}}
+                    {{data.fullname}}
                 </th>
 
             </tr>
@@ -26,72 +35,44 @@
 
         <body>
             <tr>
-                <td>ประเภท</td>
+                <td>ประเภทกิจการ</td>
                 <td>
+                    {% for tag in tags %}
 
+                    / {{tag}} 
+
+                    {% endfor %}
                 </td>
             </tr>
         </body>
 
         <body>
             <tr>
-                <td>มียอดผติดตาม</td>
+                <td>เกี่ยวกับเรา</td>
                 <td>
-                    {{APIs.1}}
+                {{data.desc}} 
                 </td>
             </tr>
         </body>
-
+        
         <body>
-            <tr>
-                <td>ยอดเข้าชมทั้งหมด</td>
-                <td>
-                    {{APIs.2}}
-                </td>
-            </tr>
-        </body>
-
-        <body>
-            <tr>
-                <td>จำนวนคลิปในช่อง</td>
-                <td>
-                    {{APIs.3}}
-                </td>
-            </tr>
-        </body>
-
-        <body>
-            <tr>
-                <td>E-mail</td>
-                <td> </td>
-            </tr>
-        </body>
-
-        <tbody>
             <tr>
                 <td>เรทการว่าจ้าง</td>
-                <td> </td>
+                <td>{{data.pay_rate}}</td>
             </tr>
-        </tbody>
+        </body>
+        
         <tbody>
             <tr>
-                <td>ช่องสร้างเมื่อ</td>
-                <td>
-                    {{APIs.4}}
-                </td>
+                <td>E-mail</td>
+                <td>{{data.email}}</td>
             </tr>
-        </tbody>
-        <tbody>
-            <tr>
-                <td>ประเทศ</td>
-                <td>
-                    {{APIs.5}}
-                </td>
-            </tr>
+        </tbody> 
         </tbody>
     </table>
 </div>
 <br><br>
+
 
 
 {% endblock %}

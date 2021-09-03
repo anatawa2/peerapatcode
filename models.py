@@ -25,13 +25,14 @@ class User(db.Model):
     password = db.Column(db.String(100))
     fullname = db.Column(db.String(100))
     desc = db.Column(db.Text)
-    role = db.Column(db.String(20))
-    pay_rate = db.Column(db.String(150))
-    tag = db.Column(db.String(200))
     email = db.Column(db.String(50))
+    role = db.Column(db.String(20))
+    id_channel = db.Column(db.String(50))
+    pay_rate = db.Column(db.String(150))
+    pic = db.Column(db.Text)
 
     def __repr__(self):
-        return '<User id: {self.id}, username: {self.username}, password: {self.password}, fullname: {self.fullname}, desc: {self.desc}, phone: {self.phone}, pay_rate: {self.pay_rate}, role: {self.role},  tag: {self.tag}>'
+        return '<User id: {self.id}, username: {self.username}, password: {self.password}, fullname: {self.fullname}, desc: {self.desc}, email: {self.email},role: {self.role},  id_channel: {self.id_channel}, pay_rate: {self.pay_rate}, pic: {self.pic}>'
 
 
 

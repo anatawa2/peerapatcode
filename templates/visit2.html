@@ -1,0 +1,108 @@
+{% extends 'layout.html' %}
+
+{% block head %} {% endblock %}
+
+{% block content %}
+
+<br>
+<div align="center" class="rounded mx-auto d-block">
+    <img src="{{api.5}}" alt="pic" style="max-width: 10%">
+    <br>
+</div>
+<br>
+<div class="container">
+
+    <table class="table table-bordered">
+
+        <body>
+            <tr>
+                <th>ช่อง</th>
+
+                <th>
+                    {{api.0}}
+                </th>
+
+            </tr>
+        </body>
+
+        <body>
+            <tr>
+                <td>ประเภทที่เกี่ยวข้อง</td>
+                <td>
+                    {% for tag in tags %}
+
+                    / {{tag}}
+
+                    {% endfor %}
+                </td>
+            </tr>
+        </body> 
+
+        <body>
+            <tr>
+                <td>เกี่ยวกับเรา</td>
+                <td>
+                  {{data.desc}} 
+                </td>
+            </tr>
+        </body>
+
+        <body>
+            <tr>
+                <td>มียอดผติดตาม</td>
+                <td>
+                    {{api.1}}
+                </td>
+            </tr>
+        </body>
+
+        <body>
+            <tr>
+                <td>ยอดเข้าชมทั้งหมด</td>
+                <td>
+                    {{api.2}}
+                </td>
+            </tr>
+        </body>
+
+        <body>
+            <tr>
+                <td>จำนวนคลิปในช่อง</td>
+                <td>
+                    {{api.3}}
+                </td>
+            </tr>
+        </body>
+
+        <body>
+            <tr>
+                <td>E-mail</td>
+                <td>{{data.email}}</td>
+            </tr>
+        </body>
+
+        <tbody>
+            <tr>
+                <td>เรทการว่าจ้าง</td>
+                <td>{{data.pay_rate}}</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td>ช่องสร้างเมื่อ</td>
+                <td>
+                    {{api.4}} (YYYY/MM/DD)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br><br>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/{{vdo}}" title="YouTube video player"
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
+
+
+
+{% endblock %}
