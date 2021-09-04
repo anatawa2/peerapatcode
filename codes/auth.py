@@ -3,6 +3,7 @@ from flask.views import View
 from views import *
 from models import *
 
+
 class IndexView(View):
     def dispatch_request(self):
         if 'loggedin' not in session:
@@ -10,7 +11,7 @@ class IndexView(View):
             return render_template('/login.html')
 
         return redirect(url_for('recommended'))
-        #return render_template('/index.html')
+        # return render_template('/index.html')
 
 
 class RoleRegister(View):
@@ -62,19 +63,28 @@ class LoginForm(View):
             if request.method == 'POST':
                 username = request.form['username']
                 password = request.form['password']
+
+                # try:
+                #     if request.form['remember']:
+                #         remember = True
+                # except:
+                #     remember = False
+
                 error = None
-                User = Conn.toLogin(username, password)
+                user = Conn.toLogin(username, password)
 
                 if not username or not password:
                     error = 'Fill out the form'
 
-                elif User is None:
+                elif user is None:
                     error = 'Incorrect User or Password.'
 
                 elif error is None:
-                    session['id'] = User.id
+                    session['id'] = user.id
+                    session['role'] = user.role
                     session['loggedin'] = True
-                    session['role'] = User.role
+                    # session.permanent = remember
+
                     return redirect(url_for('recommended'))
 
                 flash(error)
@@ -85,4 +95,5 @@ class LoginForm(View):
 
     def logout():
         session.clear()
+        # session.permanent = False
         return render_template('/login.html')

@@ -1,522 +1,496 @@
 {% extends 'layout.html' %}
 {% block head %}
-<link rel="stylesheet" href="{{url_for('static', filename='/css/Checkbox.css')}}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock %}
 {% block title %} My Profile {% endblock %}
 
 {% block content %}
 <style>
-    .pf {
+    .profilepic {
         vertical-align: middle;
-        width: 150px;
-        height: 150px;
+        width: 180px;
+        height: 180px;
         border-radius: 50%;
+    }
+
+    .bg-primary {
+        background: #ea9393 !important;
+
+    }
+
+    .btn.btn-primary {
+        /* background: #01d28e !important; */
+        background: #d62828 !important;
+        border-color: #ea9393 !important;
+        color: #fff;
+    }
+
+    .white>h3,
+    p {
+        color: rgb(255, 255, 255)
+    }
+
+    input[type=checkbox] {
+        transform: scale(1.5);
     }
 </style>
 
-<br><br><br> 
-<div class='container'>
 
-    <br><br>
-    <h2>แก้ไขข้อมูลส่วนตัว :</h2>
-    <br>
+<br><br><br><br><br>
+<section class="ftco-section">
     <div class="container">
+        <form action="/profile/update" method="POST" enctype="multipart/form-data" class="contactForm">
 
-        {% if session['role'] == "youtuber" %}
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="wrapper">
+                        <div class="row no-gutters">
+                            <div class="col-lg-8 col-md-7 order-md-last d-flex align-items-stretch">
+                                <div class="contact-wrap w-100 p-md-5 p-4">
+                                    <h3 class="mb-4">แก้ไขข้อมูลส่วนตัว</h3>
+                                    <div class="row">
+                                        {% if session['role'] == 'youtuber' %}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Youtube Channel</label>
+                                                <input type="text" class="form-control" name="fullname"
+                                                    value="{{data.fullname}}" placeholder="Name">
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Company Name</label>
+                                                <input type="text" class="form-control" name="fullname"
+                                                    value="{{data.fullname}}" placeholder="Name">
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        <input type="hidden" name="id" value="{{data.id}}">
+                                        <input type="hidden" name="pic" value="{{api.5}}">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">E-mail</label>
+                                                <input type="email" class="form-control" name="email"
+                                                    value="{{data.email}}" placeholder="Email">
+                                            </div>
+                                        </div>
+                                        {% if session['role'] == 'youtuber' %}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Channel ID</label>
+                                                <input type="text" class="form-control" name="id_channel"
+                                                    value="{{data.id_channel}}" placeholder="ID">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label">Wage Rate / Video</label>
+                                                <input type="text" class="form-control" name="payrate"
+                                                    value="{{data.pay_rate}}" placeholder="ID">
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label">Wage Rate / Video</label>
+                                                <input type="text" class="form-control" name="payrate"
+                                                    value="{{data.pay_rate}}" placeholder="ID">
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label">Description</label>
+                                                <input class="form-control" name="desc" value="{{data.desc}}" rows="4">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="label">Password </label>
+                                                <input type="text" class="form-control" name="password"
+                                                    value="{{data.password}}">
+                                            </div>
+                                        </div>
 
-        <img src="{{data.pic}}" alt="pic" class='pf'>
-        <br>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </div>
 
-        {% else %}
-        <div class="containers">
-            <img src="/static/uploads/{{data.id}}/{{data.pic}}" class="pf">
-
-        </div>
-
-        <br>
-        <form action="/profile/upload" enctype="multipart/form-data" method="POST">
-            <input type="file" name="file" /><br>
-            <input type="submit" value="Upload a file" />
-        </form>
-
-        {% endif %}
-
-        <br>
-
-        <form action="/profile/update" method="POST">
-            <div class="form-group">
-                {% if session['role'] == "youtuber" %}
-                <label>Youtube Channel :</label>
-                {% else %}
-                <label>Company Name :</label>
-                {% endif %}
-                <input type="hidden" name="id" value="{{data.id}}">
-                <input type="hidden" name="pic" value="{{api.5}}">
-                <input type="text" class="form-control" name="fullname" value="{{data.fullname}}">
-            </div>
-            {% if session['role'] == "youtuber" %}
-            <div class="form-group">
-                <label>อธิบายเกี่ยวกับแชนแนลของคณ:</label>
-                <input type="text" class="form-control" name="desc" value="{{data.desc}}">
-            </div>
-            <div class="form-group">
-                <label> Channel ID<a
-                        href="https://ultimate.brainstormforce.com/docs/how-to-find-youtube-channel-name-and-channel-id/">คลิก</a>
-                </label>
-                <input type="text" class="form-control" name="id_channel" value="{{data.id_channel}}">
-            </div>
-
-            {% else %}
-            <div class="form-group">
-                <label>อธิบายเกี่ยวกับองค์กรของคณ:</label>
-                <input type="text" class="form-control" name="desc" value="{{data.desc}}">
-
-            </div>
-            {% endif %}
-            <div class="form-group">
-                <label>E-mail :</label>
-                <input type="text" class="form-control" name="email" value="{{data.email}}">
-            </div>
-            <div class="form-group">
-                <label>เรทการรับงาน :</label>
-                <input type="text" class="form-control" name="payrate" value="{{data.pay_rate}}">
-            </div>
-            <div class="form-group">
-                <label>Password :</label>
-                <input type="text" class="form-control" name="password" value="{{data.password}}">
-            </div>
-            <br>
-            <b>
-                {% with msg = get_flashed_messages() %}
-                {% if msg %}
-                <ul>
-                    {% for message in msg %}
-                    <h4 style="color: #ff0000;">{{ message }}</h4>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-                {% endwith %}
-            </b>
-            <a type="button" class="btn btn-warning btn-xs" data-bs-toggle="modal"
-                data-bs-target="#modaledit{{data.id}}">ตั้งค่าประเภทของช่อง</a>
-
-            <div class="form-group">
-                <br><button type="submit" class="btn btn-info">บันทึกข้อมูล</button>
-            </div>
-        </form>
-
-
-        {% if session["role"] == "youtuber" %}
-        <div id="modaledit{{data.id}}" class="modal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">เลือกประเภทของช่องคณ</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/profile/tag" method="POST">
-                            <div class="form-group">
-                                <input type="hidden" name="id" value="{{data.id}}">
-                                <div class="row">
-                                    <div class="toggle-button-cover">
-                                        <h6> ความบันเทิง</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox"
-                                                    value="Entertainment" {%if tag.1 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> สขภาพ</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Health"
-                                                    {%if tag.2 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> ให้ความร้</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox"
-                                                    value="Education" {%if tag.3 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> ไลฟ์สไตล์</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox"
-                                                    value="Lifestyle" {%if tag.4 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="toggle-button-cover">
-                                        <h6> ท่องเที่ยว</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Travel"
-                                                    {%if tag.5 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> สำหรับเด็ก</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Kids"
-                                                    {%if tag.6 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> รีวิว</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Review"
-                                                    {%if tag.7 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> เทคโนโลยี</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Tech"
-                                                    {%if tag.8 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="toggle-button-cover">
-                                        <h6> ภาพยนต์</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Movie"
-                                                    {%if tag.9 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> อนิเมชั่น</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox"
-                                                    value="Animation" {%if tag.10 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> เพลง</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Music"
-                                                    {%if tag.11 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> ASMR</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="ASMR"
-                                                    {%if tag.12 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="toggle-button-cover">
-                                        <h6> อาหาร</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Food"
-                                                    {%if tag.13 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> กีฬา</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Sport"
-                                                    {%if tag.14 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> เกม</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Game"
-                                                    {%if tag.15 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> ความงาม</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Beauty"
-                                                    {%if tag.16 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="toggle-button-cover">
-                                        <h6> ซบซิบ</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Gossip"
-                                                    {%if tag.17 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> สิ่งประดิษฐ์</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="DIY" {%if
-                                                    tag.18 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> ศิลปะ</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Art" {%if
-                                                    tag.19 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> Podcast</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Podcast"
-                                                    {%if tag.20 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="toggle-button-cover">
-                                        <p style="font-size:15px"> ประวัติศาสตร์</p>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox"
-                                                    value="Motivation" {%if tag.21 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <p style="font-size:15px"> วิทยาศาสตร์</p>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Science"
-                                                    {%if tag.22 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <p style="font-size:13px"> แรงบันดาลใจ</p>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="History"
-                                                    {%if tag.23 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <p style="font-size:15px"> ข่าว</p>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="NEWS"
-                                                    {%if tag.24 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
+                                        <div class="col-md-1">
+                                            {% with msg = get_flashed_messages() %}
+                                            {% if msg %}
+                                            {% for message in msg %}
+                                            <h3 style="color: #00d423;">{{ message }}</h3>
+                                            {% endfor %}
+                                            {% endif %}
+                                            {% endwith %}
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
 
+                            <div class="col-lg-4 col-md-5 d-flex align-items-stretch">
+                                <div class="info-wrap bg-primary w-100 p-md-5 p-4">
+                                    <div class="white" align="center">
+                                        {% if session['role'] == "youtuber" %}
+
+                                        <img src="{{data.pic}}" alt="pic" class='profilepic'>
+                                        <br>
+
+                                        {% else %}
+                                        <div class="avatar-upload">
+                                            <div class="avatar-edit">
+                                                <input type='file' name="file" id="imageUpload"
+                                                    accept=".png, .jpg, .jpeg" />
+                                                <label for="imageUpload"></label>
+                                            </div>
+                                            <div class="avatar-preview">
+                                                {% if data.pic %}
+                                                <div id="imagePreview"
+                                                    style="background-image: url(/static/uploads/{{data.id}}/{{data.pic}});">
+                                                    <!-- <img src=" /static/uploads/{{data.id}}/{{data.pic}}"
+                                                        class="profilepic"> -->
+                                                </div>
+                                                {% else %}
+                                                <div id="imagePreview"
+                                                    style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAclBMVEX///8AAACUlJQODg709PTPz8/7+/s6OjqlpaXCwsJ0dHTw8PAYGBhhYWHGxsbr6+sfHx/Z2dmysrIzMzNERETn5+chISFSUlKbm5uCgoIWFha5ubnS0tKurq5KSkppaWmKioopKSlNTU14eHgtLS1lZWV8Ee67AAAFWElEQVR4nO2d61bqMBBGi6UIVpTKRREU9Oj7v+IBPTRJG0iTZmai59u/XMu1OtlkcoHmkmUAAAAAAAAAAAD4vxkNl1VBwHYobXaknKxfB2TsSmm/YpfT6R2ZySpu32n1pBWHO3q/A7f3UoLFM4ugnOILk9+BmYjiE5+gjOKYU1AiUSe8goPBM3OPem8Ogs/7TXU/jMpo01Bc8So+6rGnFUWIVpawJqr++b7d0cRotwPO7kbL0UequbGlpfPNbh5U0HeyILa+bMVVi/M65HxEFsTaWzMlaqUikvQx39SGRrd9y5KoV3W8NWGU2vDtQVdkGTTUUEGZM7Xh7agwapE+Ucs62JQyjDIsszvetrisY20ow+iGpiJ5W1Sd3JIlzJeQoUjdFtW3CtIwpmFmtMVn2kR9EjFsJCqpYj1Y5JRRWoaM3Y2UIZ+imCFbosoZcikKGjYSlWrQkDTMWCZwooYs3Y2sIccETtiQoRalDenborgh+aAhb0idqAkYEiuyG9p+z9vqv0/FTlRuw8HUwu5Nr8XIr23YDTsQdwKXouHgNWboJA0HRcTQaRo+RQydpuFVxNBMhve/3jBb/3rDzGvF1Y80zLZXNw7+/HDDDuQwDAGGrMAwCBiyAsMgYMgKDIOAISswDAKGrMAwCBh2YTje76Os8U/VsPgq2DTCMv9EDU9v/677r4NP01C93pz3rsUkDfX3t4u+iikaGi+oeysmaGgK9t6Tkp5hU/DQ3fSqxeQM24I9EzU1Q5vgQbFHoiZmaBfs1RbTMjwn2CdRkzI8L9hDMSXDS4LhE7iEDC8LBk/g0jF0CYYmajKG5lrCj9Nfxqb3IMVUDA3BfLk4/fliHCsQMmgkYtjcJXF9+nucGTtgAyZwaRiaeweX2UgzNBX9EzUJw0aKZqZhQ9E3UVMwNHvR4zpQ09BU9G2LCRiaKfq1XLlh2CtR5Q2bbfBI07CPorihmaL/Fpy3DBs9qk+iShsagvVy87Zhoy161KKwoS1FM6thcKLKGpqbd9TmfZthqKKooTkOatsFrIaBg4ak4fmNO3bDsAmcoOFSL+/KOF/ijKGp2PFUEUHDTz1FzX1J5wzNcwq7vXyTMxytNMHGlp2zhkYt7jsVRs5wOFMp2txZdt5QV9x3KoxgltbfcletM14uGGqK7f/ZEDQ8FTVv7w28ZFi3xbxbZyo5WnxvCPmwbJu7aHj6aDru1BId8Sefi8cn28h92TCrbhav6667QoXnpWcmJg5DL6S/W9iBoQ8wDAKGTmDoAwyDgKETGPoAwyBg6ASGPsAwCBg6gaEPMAwChk5g6AMMg4ChExj6AMMgYOgEhj7AMAgYOoGhDzAMAoZOYOgDDIOAoZPfb5i9/nrDm9MT+h+knqjh6SLTRf/CJGr478bk6wgXGqRqmC3308+XGDftJmsYDRgGAUNWYBgEDFmBYRAwZAWGQcCQFRgGwXS3ejfqssS8lWycpGH/n3wU6kK01v5XdtSe+AnJUzcRnxrGA8mnra5863gqACHTuixRL7FUp6zRXVHfDfVhP0Z9bj1cDNZRn+uPul4v5mChfu48UEV9cDoFmdcPnsd9cDLl0M52iJv/fminLj7EfvZAU4xwOH4QQ00w/vxRP9DxI8odB97cvWllIBiYjWM5p/z9TTXVC0DRVBoXvc72m6oc8lBWm/3MiG45XCQCnrf1khJzSqoxdkdmIua3CoMrd2wW4s5mDF7c0Rkgq8EjRe4uADE58VBVet26TMAu6ncmK8XCXQwyFltyvy/HnUyu5ju+uVQ5WXPX5GK9oc9Pk1FZbQsetlUZYxEHAAAAAAAAAAAAfjJ/ATITTfZGGyndAAAAAElFTkSuQmCC);">
+
+                                                </div>
+
+                                                {% endif %}
 
 
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </div>
+
+                                        {% endif %}
+
+                                        <br>
+                                        <h3>Profile Picture</h3>
+                                        {% for show in showtag %}
+                                        <p>{{show}}</p>
+                                        {% endfor %}
+
+                                        <a type="button" class="btn btn-light" data-bs-toggle="modal"
+                                            data-bs-target="#modaledit{{data.id}}">Select TAG</a>
+
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-
                 </div>
             </div>
-        </div>
-        {% else %}
-
-        <div id="modaledit{{data.id}}" class="modal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">เลือกประเภทของช่องคณ</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/profile/tag" method="POST">
-                            <div class="form-group">
-                                <input type="hidden" name="id" value="{{data.id}}">
-                                <div class="row">
-                                    <div class="toggle-button-cover">
-                                        <h6> สินค้า</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Product"
-                                                    {%if tag.25 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="toggle-button-cover">
-                                        <h6> บริการ</h6>
-                                        <div class="button-cover">
-                                            <div class="button r" id="button-8">
-                                                <input type="checkbox" class="checkbox" name="checkbox" value="Service"
-                                                    {%if tag.26 %} checked {%endif%}>
-                                                <div class="knobs">
-                                                    <span></span>
-                                                </div>
-                                                <div class="layer"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                </div>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
-        {% endif %}
-
+        </form>
     </div>
-    <br><br><br>
+</section>
 
+{% if session['role'] == 'youtuber' %}
+<div id="modaledit{{data.id}}" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">เลือกประเภทของช่องคณ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/profile/tag" method="POST">
+                    <div class="form-group">
+                        <input type="hidden" name="id" value="{{data.id}}">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Entertainment" {%if tag.1
+                                    %} checked {%endif%} id="1">
+                                <label for="1">ความบันเทิง</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Health" {%if tag.2 %}
+                                    checked {%endif%} id="2">
+                                <label for="2">สุขภาพ</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Education" {%if tag.3 %}
+                                    checked {%endif%} id="3">
+                                <label for="3">ให้ความรู้</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Lifestyle" {%if tag.4 %}
+                                    checked {%endif%} id="4">
+                                <label for="4">ไลฟ์สไตล์</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Travel" {%if tag.5 %}
+                                    checked {%endif%} id="5">
+                                <label for="5">ท่องเที่ยว</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Kids" {%if tag.6 %}
+                                    checked {%endif%} id="6">
+                                <label for="6">สำหรับเด็ก</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Review" {%if tag.7 %}
+                                    checked {%endif%} id="7">
+                                <label for="7">รีวิว</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Tech" {%if tag.8 %}
+                                    checked {%endif%} id="8">
+                                <label for="8">เทคโนโลยี</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Movie" {%if tag.9 %}
+                                    checked {%endif%} id="9">
+                                <label for="9">ภาพยนต์</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Animation" {%if tag.10 %}
+                                    checked {%endif%} id="10">
+                                <label for="10">อนิเมชั่น</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Music" {%if tag.11 %}
+                                    checked {%endif%} id="11">
+                                <label for="11">เพลง</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="ASMR" {%if tag.12 %}
+                                    checked {%endif%} id="12">
+                                <label for="12">ASMR</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Food" {%if tag.13 %}
+                                    checked {%endif%} id="13">
+                                <label for="13">อาหาร</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Sport" {%if tag.14 %}
+                                    checked {%endif%} id="14">
+                                <label for="14">กีฬา</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Game" {%if tag.15 %}
+                                    checked {%endif%} id="15">
+                                <label for="15">เกม</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Beauty" {%if tag.16 %}
+                                    checked {%endif%} id="16">
+                                <label for="16">ความงาม</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Gossip" {%if tag.17 %}
+                                    checked {%endif%} id="17">
+                                <label for="17">ซุบซิบ</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="DIY" {%if tag.18 %}
+                                    checked {%endif%} id="18">
+                                <label for="18">สิ่งประดิษฐ์</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Art" {%if tag.19 %}
+                                    checked {%endif%} id="19">
+                                <label for="19">ศิลปะ</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Podcast" {%if tag.20 %}
+                                    checked {%endif%} id="20">
+                                <label for="20">Podcast</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Motivation" {%if tag.21
+                                    %} checked {%endif%} id="21">
+                                <label for="21">แรงบันดาลใจ</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="History" {%if tag.22 %}
+                                    checked {%endif%} id="22">
+                                <label for="22">ประวัติศาสตร์</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Science" {%if tag.23 %}
+                                    checked {%endif%} id="23">
+                                <label for="23">วิทยาศาสตร์</label>
+                            </div>
+
+                            <div class="col-md-3">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="NEWS" {%if tag.24 %}
+                                    checked {%endif%} id="24">
+                                <label for="24">ข่าว</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+{% else %}
+
+<div id="modaledit{{data.id}}" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">เลือกประเภทของช่องคณ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/profile/tag" method="POST">
+                    <div class="form-group">
+                        <input type="hidden" name="id" value="{{data.id}}">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Product" {%if tag.25 %}
+                                    checked {%endif%} id="25">
+                                <label for="25">สินค้า</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input type="checkbox" class="checkbox" name="checkbox" value="Service" {%if tag.26 %}
+                                    checked {%endif%} id="26">
+                                <label for="26">บริการ</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+
+<style>
+    .avatar-upload {
+        position: relative;
+        max-width: 205px;
+        margin: 15px auto;
+    }
+
+    .avatar-upload .avatar-edit {
+        position: absolute;
+        right: 12px;
+        z-index: 1;
+        top: 10px;
+    }
+
+    .avatar-upload .avatar-edit input {
+        display: none;
+    }
+
+    .avatar-upload .avatar-edit input+label {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 0;
+        border-radius: 100%;
+        background: #FFFFFF;
+        border: 1px solid transparent;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        font-weight: normal;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .avatar-upload .avatar-edit input+label:hover {
+        background: #f1f1f1;
+        border-color: #d6d6d6;
+    }
+
+    .avatar-upload .avatar-edit input+label:after {
+        content: "\f040";
+        font-family: 'FontAwesome';
+        color: #757575;
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin: auto;
+    }
+
+    .avatar-upload .avatar-preview {
+        width: 197px;
+        height: 197px;
+        position: relative;
+        border-radius: 100%;
+        border: 6px solid #F8F8F8;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-upload .avatar-preview>div {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+</style>
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                $('#imagePreview').hide();
+                $('#imagePreview').fadeIn(650);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#imageUpload").change(function () {
+        readURL(this);
+    });
+</script>
+
 {% endblock %}

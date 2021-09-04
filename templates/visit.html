@@ -3,18 +3,10 @@
 {% block head %} {% endblock %}
 
 {% block content %}
-<style>
-    .pf {
-        vertical-align: middle;
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-    }
-</style>
 
-<br>
+<br><br><br><br><br>
 <div align="center" class="rounded mx-auto d-block">
-    <img src="/static/uploads/{{data.id}}/{{data.pic}}" class="pf">
+    <img src="{{api.5}}" alt="pic" style="max-width: 10%">
     <br>
 </div>
 <br>
@@ -24,10 +16,10 @@
 
         <body>
             <tr>
-                <th>ชื่อบริษัท</th>
+                <th>ช่อง</th>
 
                 <th>
-                    {{data.fullname}}
+                    {{api.0}}
                 </th>
 
             </tr>
@@ -35,43 +27,81 @@
 
         <body>
             <tr>
-                <td>ประเภทกิจการ</td>
+                <td>ประเภทที่เกี่ยวข้อง</td>
                 <td>
                     {% for tag in tags %}
 
-                    / {{tag}} 
+                    / {{tag}}
 
                     {% endfor %}
                 </td>
             </tr>
-        </body>
+        </body> 
 
         <body>
             <tr>
                 <td>เกี่ยวกับเรา</td>
                 <td>
-                {{data.desc}} 
+                  {{data.desc}} 
                 </td>
             </tr>
         </body>
-        
+
         <body>
             <tr>
-                <td>เรทการว่าจ้าง</td>
-                <td>{{data.pay_rate}}</td>
+                <td>มียอดผติดตาม</td>
+                <td>
+                    {{api.1}}
+                </td>
             </tr>
         </body>
-        
-        <tbody>
+
+        <body>
+            <tr>
+                <td>ยอดเข้าชมทั้งหมด</td>
+                <td>
+                    {{api.2}}
+                </td>
+            </tr>
+        </body>
+
+        <body>
+            <tr>
+                <td>จำนวนคลิปในช่อง</td>
+                <td>
+                    {{api.3}}
+                </td>
+            </tr>
+        </body>
+
+        <body>
             <tr>
                 <td>E-mail</td>
                 <td>{{data.email}}</td>
             </tr>
-        </tbody> 
+        </body>
+
+        <tbody>
+            <tr>
+                <td>เรทการว่าจ้าง</td>
+                <td>{{data.pay_rate}}</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td>ช่องสร้างเมื่อ</td>
+                <td>
+                    {{api.4}} (YYYY/MM/DD)
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
 <br><br>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/{{vdo}}" title="YouTube video player"
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 
 
 

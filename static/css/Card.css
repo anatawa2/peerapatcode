@@ -22,69 +22,86 @@ bg-light {
     justify-content: center;  
 }
 
+.main-body2 {  
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px; 
+    justify-content: center;   
+}
+
 .main {
     display: block;
     width: 432px;
-    height: 340px;
-    margin: 25px 75px;
+    height: 230px;
+    margin: 125px 75px;
     border-radius: 50px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
     position: relative; 
-    box-sizing: border-box;  
+    box-sizing: border-box;      
+    background-color: rgb(255, 244, 244); 
 }
  
 
-.pf, #img1 {
-    position: absolute;
-    top: 55px;
+#img1 {
+    position: absolute;    
+    top: -90px;
     left: 50%;
-    width: 90px;
-    height: 90px;
+    width: 140px;
+    height: 140px; 
     transform: translateX(-50%);
     border-radius: 50%;
-}
-
-.img img {
-    height: 160px;
-    width: 432px;
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
+    border: 6px solid #d62828;
+    /* border: 1px solid #e0e0e0;  */
 }
  
+ 
 .content {
-    margin: 35px 0px 0px 0px;
+    margin: 48px 0px 0px 0px;
     text-align: center;
     justify-content: center;
     align-items: center;
     flex-direction: column; 
     padding: 1rem;
+    color: #300000;
+        
     
 }
 
+.content h3{
+    margin-bottom: 13px;
+}
+
 .content p {
-    color: #8d8d8d;
-    font-size: 16px;
+    color: #666666;
+    font-size: 17px;
 }
 
 /* youtuber perspective */
 .box-item {
     display: block;
-    width: 432px;
+    width: 480px;
     height: 290px;
     margin: 25px 75px;
-    border-radius: 50px;
+    border-radius: 20px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
     box-sizing: border-box; 
     position: relative;
-    background-color: rgb(160, 160, 161);
+    border: 2px solid #ea9393; 
+    background-color: rgb(255, 244, 244);
 }
 
 .box-item img {
     margin: 1rem;
     height: 130px;
     width: 130px;
-    border-top-left-radius: 50px;
-    border-bottom-right-radius: 50px;
+    border: 1px solid rgb(201, 201, 201); 
+    border-radius: 10px;
+    /* border-top-left-radius: 50px;
+    border-bottom-right-radius: 50px; */
 }
 
 .item {
@@ -95,7 +112,11 @@ bg-light {
     position: absolute;
     z-index: 999;
     top: 25px;
-    left: 200px;
+    left: 170px;
+}
+
+.name > h1 {
+    color: #300000;
 }
 
 .details {
@@ -109,7 +130,8 @@ bg-light {
     padding: 0px 17px;
     padding-top: 5px;
     justify-content: space-between;
-    border-top:2px solid rgb(70, 69, 69); 
+    border-top:2px solid #300000; 
+    /* border-top:2px solid rgb(70, 69, 69);  */
 }
 
 
@@ -130,6 +152,9 @@ bg-light {
         margin-left: 10px;
         margin-right: 10px;
     }
+     
+}
+@media screen and (max-width: 1160px) { 
     .box-item{
         margin-left: 10px;
         margin-right: 10px;

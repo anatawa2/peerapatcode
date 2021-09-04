@@ -1,6 +1,5 @@
-
 from app import db
-from sqlalchemy import or_, and_, delete
+from sqlalchemy import or_, and_, delete 
 
 style = db.Table('style',
                  db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
@@ -45,3 +44,5 @@ class Img(db.Model):
 
     def __repr__(self):
         return '<User id: {self.id}, owner: {self.owner}, name: {self.name}>'
+
+

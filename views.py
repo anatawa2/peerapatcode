@@ -1,6 +1,6 @@
-from app import app, db
+from app import *
 from models import *
-
+ 
 
 # @app.route('/')
 # def index():
@@ -90,6 +90,16 @@ class Style():
     def byTag(a):
         data = db.session.query(User).join(style).filter(style.c.tag_id == a).all()
         return data
+
+    def showTag(id):
+        tags = []
+        pos = Style.showPos(id)  # [1,0,1,0,1]
+        style = posToId(pos)     # [1,3,5]
+
+        for i in style:
+            x = id2name(i)
+            tags.append(x)
+        return tags              # ['Entertainment','Education','Travel']
 
 
 # TAG position

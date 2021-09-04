@@ -35,7 +35,7 @@
 </head>
 
 <body class="text-center">
- 
+
 
     <main class="form-signin">
         <form action="/login" method="POST">
@@ -52,6 +52,10 @@
                 <input type="password" name="password" class="form-control" id="floatingPassword"
                     placeholder="Password">
                 <label for="floatingPassword">Password</label>
+            </div>
+            <div align="left">
+                <input type="checkbox" name="remember" id="cb">
+                <label for="cb"> Keep me logged in</label>
             </div>
             {% with msg = get_flashed_messages() %}
             {% if msg %}

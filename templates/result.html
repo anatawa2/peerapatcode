@@ -1,0 +1,121 @@
+{% extends 'layout.html' %}
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='/css/Card.css')}}">
+{% endblock %}
+{% block title %} แนะนำ {% endblock %}
+
+{% block content %}
+
+<style>
+    .title>h1 {
+        font-size: 70px;
+    }
+</style>
+
+
+
+<br><br><br><br><br><br><br>
+<div class='title' align="center">
+    <h1>{{title}}</h1>
+</div>
+<br><br><br><br>
+
+
+{% if session['role'] == "youtuber" %}
+<div class="main-body">
+
+    {% else %}
+    <div class="main-body2">
+        {% endif %}
+
+
+
+        {% set count = namespace(value=0) %}
+        {% for data in datas %}
+
+        {% if session['role'] == "youtuber" %}
+
+        <!-- นามบัตรบริษัท -->
+        <div class="box-item">
+            <img src="/static/uploads/{{data.id}}/{{data.pic}}" alt="pic" ">
+        <div class=" item">
+            <div class="name">
+                <h1>{{data.fullname}}</h1>
+                <p>ประเภท</p>
+            </div>
+            <div class="details">
+                <p>{{data.desc}}</p>
+            </div>
+            <div class="footer">
+                <div class="foot-l">
+                    <nan>เรทราคา : {{data.pay_rate}}</p>
+                </div>
+                <div class="footer-r">
+                    <p>Email : {{data.email}} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {% else %}
+
+    <div class="main">
+        <div class="profile">
+            <a href="/visit/{{data.id}}"> <img id="img1" src="{{data['pic']}}"></a>
+        </div>
+        <div class="content">
+
+            <h3>{{data.fullname}}</h3>
+
+            <p>{{tags[count.value][0]}} ,
+                {{tags[count.value][1]}} {% if tags[count.value][2] %} , {% endif %}
+                {{tags[count.value][2]}} {% if tags[count.value][3] %} , {% endif %}
+                {{tags[count.value][3]}} {% if tags[count.value][4] %} , {% endif %}
+                {{tags[count.value][4]}} {% if tags[count.value][5] %} , {% endif %}
+                {{tags[count.value][5]}} {% if tags[count.value][6] %} , {% endif %}
+                {{tags[count.value][6]}} {% if tags[count.value][7] %} , {% endif %}
+                {{tags[count.value][7]}} {% if tags[count.value][8] %} , {% endif %}
+                {{tags[count.value][8]}}
+
+            </p>
+            <p>{{fetch[count.value][1]}} ผู้ติดตาม</p>
+        </div>
+
+    </div>
+
+
+
+
+
+    {% endif %}
+
+
+
+    <br><br>
+    {% set count.value = count.value + 1 %}
+    {% endfor %}
+</div>
+<style>
+    .card-footer {
+        display: block;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 120px;
+        background-color: #ea9393;
+        color: white;
+        text-align: center;
+        justify-content: center;
+        padding: 50px;
+        margin-top: 115px;
+    }
+</style>
+
+
+<br><br><br><br><br>
+<footer class="card-footer">
+    <p>© RMUTI ECP-PROJECT 2021</p>
+</footer>
+{% endblock %}

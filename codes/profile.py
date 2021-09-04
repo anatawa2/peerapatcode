@@ -13,6 +13,7 @@ class MyProfile(View):
             me = session['id']
             profile = Conn.toProfile(me)
             tags = Style.showPos(me)
+            show = Style.showTag(me)
             api = ''
 
             if session['role'] == 'youtuber':
@@ -21,7 +22,7 @@ class MyProfile(View):
                 except:
                     api = ''
 
-            return render_template('/profile.html', data=profile, tag=tags, api=api, profilepage=True)
+            return render_template('/profile.html', data=profile, tag=tags, api=api, showtag=show, profilepage=True)
 
         return render_template('/login.html')
 
@@ -36,6 +37,9 @@ class UpdateProfile(View):
             e = request.form['password']
             f = request.form['payrate']
 
+            if request.files['file']:
+                UpdateProfile.uploadIMG()
+
             if session['role'] == "youtuber":
                 g = request.form['pic']
                 h = request.form['id_channel']
@@ -43,7 +47,7 @@ class UpdateProfile(View):
             else:
                 updated = Conn.toUpdateSP(a, b, c, d, e, f)
 
-            flash('Updated')
+            flash('UPDATED')
         return redirect(url_for('profile', data=updated))
 
     def uploadIMG():
@@ -75,7 +79,7 @@ class UpdateProfile(View):
         FilePath.save(os.path.join(maindir + me + '/', filename))
         updated = Conn.uploadImg(me, filename)
 
-        flash('Updated')
+        # flash('Updated')
         return redirect(url_for('profile', img=updated))
 
 
@@ -95,18 +99,24 @@ class SaveTag(View):
 # Search By Tag
 class SearchByTag(View):
     def dispatch_request(self):
-        return render_template('tag.html', tagpage=True )
+        return render_template('tag.html', tagpage=True)
 
     def getTag(tag):
 
         tagID = name2id(tag)
         users = Style.byTag(tagID)
 
-        # # if no data
-        # if users == []:
-        #     users = "nothing"
+        tags,fetch = [],[]
+        for i in range(len(users)):
 
-        return render_template('tagresult.html', datas=users)
+            b = Style.showTag(users[i].id)
+            tags.append(b)
+
+            if session['role'] == "sponsor":
+                a = APIs.ID(users[i].id_channel)
+                fetch.append(a)
+
+        return render_template('result.html', datas=users, fetch=fetch, tags=tags, title=tag, tagpage=True)
 
 
 # HOME PAGE
@@ -116,19 +126,25 @@ class Recommended(View):
         if session['role'] == "youtuber":
             users = db.session.query(User).filter(User.role == "sponsor").all()
             random.shuffle(users)
+            title = "บริษัทที่คุณอาจสนใจ"
         else:
             users = db.session.query(User).filter(
                 User.role == "youtuber").all()
             random.shuffle(users)
+            title = "แชนแนลที่คุณอาจสนใจ"
 
-        vdo = []   #  [(vidId, vidTitle, vidPic),(vidId, vidTitle, vidPic)]
-        indx = []  #  [obj,obj,obj]
-        for i in range(7):
+        indx,tags,fetch = [],[],[]  # [obj,obj,obj] 
+        for i in range(5):
             indx.append(users[i])
-            # a = APIs.vdo(users[i].id_channel)
-            # vdo.append(a)
 
-        return render_template('recommended.html', datas=indx, vdo=vdo, homepage=True)
+            b = Style.showTag(users[i].id)
+            tags.append(b)
+
+            if session['role'] == "sponsor":
+                a = APIs.ID(users[i].id_channel)
+                fetch.append(a)
+
+        return render_template('result.html', datas=indx, fetch=fetch, tags=tags, title=title , homepage=True)
 
 
 # USER PROFILE
@@ -137,20 +153,11 @@ class Visit(View):
     # /visit/<id>
     def VisitTo(id):
         user = Conn.toProfile(id)
-        tags = []
-        pos = Style.showPos(id)  # [1,0,1,0,0]
-        style = posToId(pos)
+        tags = Style.showTag(id)
 
-        for i in style:
-            x = id2name(i)
-            tags.append(x)
-
-        if session['role'] == "youtuber":
-            return render_template('visit.html', data=user, tags=tags)
-        else:
-            fetch = APIs.ID(user.id_channel)
-            vdo = APIs.vdo(user.id_channel)
-            return render_template('visit2.html', data=user, tags=tags, api=fetch, vdo=vdo)
+        fetch = APIs.ID(user.id_channel)
+        vdo = APIs.vdo(user.id_channel)
+        return render_template('visit.html', data=user, tags=tags, api=fetch, vdo=vdo)
 
 
 # SEARCH
@@ -158,23 +165,31 @@ class SearchProfile(View):
     def dispatch_request(self):
         if request.method == "POST":
             name = request.form['search']
+            title = ('ผลการค้นหา : ' + name)
             search = "%{}%".format(name)
 
-            # if name == '':
-            #     return render_template('search.html' )
-
             if session['role'] == "youtuber":
-                record = db.session.query(User).filter(
+                users = db.session.query(User).filter(
                     and_(User.fullname.like(search), User.role == "sponsor")).all()
             else:
-                record = db.session.query(User).filter(
+                users = db.session.query(User).filter(
                     and_(User.fullname.like(search), User.role == "youtuber")).all()
 
-        return render_template('searchresult.html', datas=record)
+            tags,fetch = [],[]
+            for i in range(len(users)):
+
+                b = Style.showTag(users[i].id)
+                tags.append(b)
+
+                if session['role'] == "sponsor":
+                    a = APIs.ID(users[i].id_channel)
+                    fetch.append(a)
+
+        return render_template('result.html', datas=users, fetch=fetch, tags=tags, title=title, searchpage=True)
 
     def searchName():
 
-        return render_template('search.html',searchpage=True)
+        return render_template('search.html', searchpage=True)
 
 
 class APIs(View):
@@ -213,7 +228,7 @@ class APIs(View):
         request = youtube.search().list(
             part="snippet",
             channelId=channelID,
-            order="date", 
+            order="date",
         )
         response = request.execute()
         vidId = response["items"][0]["id"]["videoId"]

@@ -1,8 +1,6 @@
-from app import app, db
 from views import *
 from codes.profile import *
-from codes.auth import *
-
+from codes.auth import * 
 
 # Register/Login
 app.add_url_rule('/', view_func=IndexView.as_view('index'))
@@ -29,8 +27,10 @@ app.add_url_rule('/Recommended', view_func=Recommended.as_view('recommended'))
 app.add_url_rule('/visit/<id>', view_func=Visit.VisitTo)
 
 
-db.create_all()
 
+
+db.create_all()
+ 
 # for x in range(25):
 #     if x >= 1:
 
