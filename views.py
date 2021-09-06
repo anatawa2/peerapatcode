@@ -1,3 +1,4 @@
+from sqlalchemy.sql.elements import Null
 from app import *
 from models import *
  
@@ -10,7 +11,7 @@ from models import *
 class Conn():
 
     def toCheck(a):
-        username = db.session.query(User).filter(User.username == a).first()
+        username = db.session.query(User).filter(or_(User.username == a, User.email == a)).first()
         return username
 
     def toLogin(a, b):
@@ -26,7 +27,7 @@ class Conn():
         profile = db.session.query(User).filter(User.id == a).first()
         return profile
 
-    def toUpdateYT(a, b, c, d, e, f, g, h):
+    def toUpdateYT(a, b, c, d, e, f, g , h):
         updated = db.session.query(User).filter(User.id == a).first()
         updated.fullname = b
         updated.desc = c

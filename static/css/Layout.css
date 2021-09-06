@@ -8,8 +8,8 @@
 }
 
 .ftco-navbar-light .navbar-nav>.nav-item>.nav-link:hover {
-  color: #ea9393 ;
-  /* color: #fc7fb2; */
+  color: #e4e736 ;
+  /* colorgb(221, 224, 24)fb2; */
 }
 
 .ftco-navbar-light .navbar-toggler {
@@ -17,7 +17,7 @@
 }
 
 .ftco-navbar-light .navbar-nav>.nav-item.active>a {
-  color: #ea9393 ;
+  color: #28d0d6 ;
   border: 10px;
 }
 
@@ -74,4 +74,14 @@
   color: white;
   text-align: center;
   justify-content: center;
+}
+
+button, p, h1, h2, h3, h4, h5, label, th, td {
+  font-family: 'Kanit', sans-serif; 
+  
+}
+
+.btn-light, span {
+  font-family: 'Kanit', sans-serif; 
+  font-weight: 300;
 }

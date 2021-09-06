@@ -35,25 +35,33 @@ class RoleRegister(View):
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
+            repassword = request.form['repassword']
             fullname = request.form['fullname']
             email = request.form['email']
             role = request.form['role']
             check = Conn.toCheck(username)
+            check2 = Conn.toCheck(email)
 
-            if not username or not password or not fullname or not email:
+            if not username or not password or not repassword or not fullname or not email:
                 error = 'Fill out the form'
 
             if check:
-                error = 'Username already exists!'
+                error = 'Username already exist!'
+            
+            if check2:
+                error = 'Email already used!'
+
+            if password != repassword:
+                error = "Password and re-password don't match"
 
             if error is None:
                 Conn.toRegister(username, password, fullname, email, role)
                 flash('Register done!')
                 return redirect(url_for('index'))
 
-            flash(check)
+            flash(error)
 
-        return render_template('/registerform.html',)
+        return render_template('/registerform.html',password=password,repassword=repassword)
 
 
 class LoginForm(View):
@@ -64,12 +72,12 @@ class LoginForm(View):
                 username = request.form['username']
                 password = request.form['password']
 
-                # try:
-                #     if request.form['remember']:
-                #         remember = True
-                # except:
-                #     remember = False
-
+                try:
+                    if request.form['remember']:
+                        remember = True
+                except:
+                    remember = False
+ 
                 error = None
                 user = Conn.toLogin(username, password)
 
@@ -83,11 +91,11 @@ class LoginForm(View):
                     session['id'] = user.id
                     session['role'] = user.role
                     session['loggedin'] = True
-                    # session.permanent = remember
+                    session.permanent = remember
 
                     return redirect(url_for('recommended'))
 
-                flash(error)
+                flash(error) 
 
             return redirect(url_for('index'))
 
@@ -95,5 +103,5 @@ class LoginForm(View):
 
     def logout():
         session.clear()
-        # session.permanent = False
+        session.permanent = False
         return render_template('/login.html')

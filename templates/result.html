@@ -2,13 +2,15 @@
 {% block head %}
 <link rel="stylesheet" href="{{url_for('static', filename='/css/Card.css')}}">
 {% endblock %}
-{% block title %} แนะนำ {% endblock %}
+{% block title %} YourPartner {% endblock %}
 
 {% block content %}
 
 <style>
     .title>h1 {
         font-size: 70px;
+        font-family: 'Kanit', sans-serif;
+        font-weight: 600;
     }
 </style>
 
@@ -41,14 +43,18 @@
         <div class=" item">
             <div class="name">
                 <h1>{{data.fullname}}</h1>
-                <p>ประเภท</p>
+                <h6>{{tags[count.value][0]}}
+                    {% if tags[count.value][1] %} , {% endif %}
+                    {{tags[count.value][1]}}
+                </h6>
+
             </div>
             <div class="details">
                 <p>{{data.desc}}</p>
             </div>
             <div class="footer">
                 <div class="foot-l">
-                    <nan>เรทราคา : {{data.pay_rate}}</p>
+                    <nan>เรทราคา : {{data.pay_rate}}/คลิป</p>
                 </div>
                 <div class="footer-r">
                     <p>Email : {{data.email}} </p>

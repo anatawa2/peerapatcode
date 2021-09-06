@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% block head %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='/css/Button.css')}}">
 {% endblock %}
 {% block title %} My Profile {% endblock %}
 
@@ -18,13 +19,6 @@
 
     }
 
-    .btn.btn-primary {
-        /* background: #01d28e !important; */
-        background: #d62828 !important;
-        border-color: #ea9393 !important;
-        color: #fff;
-    }
-
     .white>h3,
     p {
         color: rgb(255, 255, 255)
@@ -40,14 +34,13 @@
 <section class="ftco-section">
     <div class="container">
         <form action="/profile/update" method="POST" enctype="multipart/form-data" class="contactForm">
-
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="wrapper">
                         <div class="row no-gutters">
                             <div class="col-lg-8 col-md-7 order-md-last d-flex align-items-stretch">
                                 <div class="contact-wrap w-100 p-md-5 p-4">
-                                    <h3 class="mb-4">แก้ไขข้อมูลส่วนตัว</h3>
+                                    <h3 style="color: #300000;" class="mb-4">แก้ไขข้อมูลส่วนตัว</h3>
                                     <div class="row">
                                         {% if session['role'] == 'youtuber' %}
                                         <div class="col-md-6">
@@ -66,8 +59,9 @@
                                             </div>
                                         </div>
                                         {% endif %}
+
                                         <input type="hidden" name="id" value="{{data.id}}">
-                                        <input type="hidden" name="pic" value="{{api.5}}">
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="label">E-mail</label>
@@ -78,7 +72,8 @@
                                         {% if session['role'] == 'youtuber' %}
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="label">Channel ID</label>
+                                                <label class="label">Channel ID <a data-fancybox
+                                                        href="/static/id.png">คลิก</a></label>
                                                 <input type="text" class="form-control" name="id_channel"
                                                     value="{{data.id_channel}}" placeholder="ID">
                                             </div>
@@ -117,6 +112,7 @@
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary">Save changes</button>
                                             </div>
+
                                         </div>
 
                                         <div class="col-md-1">
@@ -130,13 +126,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div><br><br><br><br>
 
 
                             <div class="col-lg-4 col-md-5 d-flex align-items-stretch">
-                                <div class="info-wrap bg-primary w-100 p-md-5 p-4">
+                                <div style="padding-bottom: 0px;" class="info-wrap bg-primary w-100 p-md-5 p-4">
                                     <div class="white" align="center">
                                         {% if session['role'] == "youtuber" %}
+                                        <input type="hidden" name="pic" value="{{api.5}}">
 
                                         <img src="{{data.pic}}" alt="pic" class='profilepic'>
                                         <br>
@@ -175,8 +172,13 @@
                                         <p>{{show}}</p>
                                         {% endfor %}
 
-                                        <a type="button" class="btn btn-light" data-bs-toggle="modal"
-                                            data-bs-target="#modaledit{{data.id}}">Select TAG</a>
+                                        <a type="button" style="border-color: rgb(116, 116, 116);" class="btn btn-light"
+                                            data-bs-toggle="modal" data-bs-target="#modaledit{{data.id}}">Select TAG</a>
+
+                                        {% if session['role'] == "youtuber" %}
+                                        <button type="submit" style="border-color: rgb(116, 116, 116);"
+                                            class="btn btn-light">Fetch (API)</button>
+                                        {% endif %}
 
                                     </div>
                                 </div>

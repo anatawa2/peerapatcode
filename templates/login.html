@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.87.0">
-    <title>Signin Template · Bootstrap v5.1</title>
+    <title>Login</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
 
@@ -30,8 +30,43 @@
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 
     <title>Log In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='/css/Login.css')}}">
+
+    <style>
+        .btn-primary {
+            background-color: #28d0d6;
+            border: 1px solid #28d0d6;
+            font-family: 'Kanit', sans-serif;
+            font-weight: 300;
+        }
+
+        .btn-primary:hover {
+            background-color: #28bcd6;
+            border: 1px solid #28d0d6;
+            color: rgb(255, 255, 255);
+        }
+
+        button,
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-family: 'Kanit', sans-serif;
+
+        }
+
+        .btn-light,
+        label {
+            font-family: 'Kanit', sans-serif;
+            font-weight: 300;
+        }
+    </style>
 </head>
 
 <body class="text-center">
@@ -46,12 +81,12 @@
             <div class="form-floating">
                 <input type="text" name="username" class="form-control" id="floatingInput"
                     placeholder="name@example.com">
-                <label for="floatingInput">Username/Email</label>
+                <label style="color: grey" for="floatingInput">Username/Email</label>
             </div>
             <div class="form-floating">
                 <input type="password" name="password" class="form-control" id="floatingPassword"
                     placeholder="Password">
-                <label for="floatingPassword">Password</label>
+                <label style="color: grey" for="floatingPassword">Password</label>
             </div>
             <div align="left">
                 <input type="checkbox" name="remember" id="cb">
@@ -60,6 +95,7 @@
             {% with msg = get_flashed_messages() %}
             {% if msg %}
             {% for message in msg %}
+            <br>
             <h5 style="color: #ff0000;">{{ message }}</h5>
             {% endfor %}
             {% endif %}

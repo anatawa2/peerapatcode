@@ -1,39 +1,36 @@
 {% extends 'layout.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='/css/Button.css')}}">
+{% endblock %}
+
+{% block title %} ค้นหา {% endblock %}
+
 {% block content %}
-<style>
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
-
-<div class="center" >
-
-    <div class="row">
-        <div class="col-sm-4">
+<br><br><br><br><br>
+<div class='container'>
+    <div class="text-center">
+        <div class="card-group">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="/static/tag/Youtuber.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">Youtuber</h5>
-                    <p class="card-text">If you need a support from the company to build your channel</p>
+                    <h3 style="color: #300000;" class="card-title">Youtuber</h3>
+                    <p style="color: #666666;" class="card-text">If you need a support from the company to build your
+                        channel</p>
                     <a href="/register/youtuber" class="btn btn-primary">Register</a>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-4">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="/static/tag/Sponsor.png" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">Sponsor</h5>
-                    <p class="card-text">if you looking for influencer who can tie-in your business</p>
+                    <h3 style="color: #300000;" class="card-title">Sponsor</h3>
+                    <p style="color: #666666;" class="card-text">if you looking for influencer who can tie-in your
+                        business
+                    </p>
                     <a href="/register/sponsor" class="btn btn-primary">Register</a>
                 </div>
             </div>
         </div>
     </div>
- </div>
-
-
+</div>
 {% endblock %}

@@ -37,14 +37,17 @@ class UpdateProfile(View):
             e = request.form['password']
             f = request.form['payrate']
 
-            if request.files['file']:
-                UpdateProfile.uploadIMG()
-
             if session['role'] == "youtuber":
                 g = request.form['pic']
                 h = request.form['id_channel']
                 updated = Conn.toUpdateYT(a, b, c, d, e, f, g, h)
-            else:
+
+            else:                
+                try:
+                    UpdateProfile.uploadIMG()
+                except:
+                    pass             
+                    
                 updated = Conn.toUpdateSP(a, b, c, d, e, f)
 
             flash('UPDATED')
@@ -106,7 +109,7 @@ class SearchByTag(View):
         tagID = name2id(tag)
         users = Style.byTag(tagID)
 
-        tags,fetch = [],[]
+        tags, fetch = [], []
         for i in range(len(users)):
 
             b = Style.showTag(users[i].id)
@@ -123,6 +126,10 @@ class SearchByTag(View):
 class Recommended(View):
     def dispatch_request(self):
 
+        if 'loggedin' not in session:
+            session['temp'] = ''
+            return render_template('/login.html')
+
         if session['role'] == "youtuber":
             users = db.session.query(User).filter(User.role == "sponsor").all()
             random.shuffle(users)
@@ -133,8 +140,8 @@ class Recommended(View):
             random.shuffle(users)
             title = "แชนแนลที่คุณอาจสนใจ"
 
-        indx,tags,fetch = [],[],[]  # [obj,obj,obj] 
-        for i in range(5):
+        indx, tags, fetch = [], [], []  # [obj,obj,obj]
+        for i in range(10):
             indx.append(users[i])
 
             b = Style.showTag(users[i].id)
@@ -144,7 +151,7 @@ class Recommended(View):
                 a = APIs.ID(users[i].id_channel)
                 fetch.append(a)
 
-        return render_template('result.html', datas=indx, fetch=fetch, tags=tags, title=title , homepage=True)
+        return render_template('result.html', datas=indx, fetch=fetch, tags=tags, title=title, homepage=True)
 
 
 # USER PROFILE
@@ -157,7 +164,7 @@ class Visit(View):
 
         fetch = APIs.ID(user.id_channel)
         vdo = APIs.vdo(user.id_channel)
-        return render_template('visit.html', data=user, tags=tags, api=fetch, vdo=vdo)
+        return render_template('visit.html', data=user, tags=tags, api=fetch, vdos=vdo, searchpage=True)
 
 
 # SEARCH
@@ -168,6 +175,9 @@ class SearchProfile(View):
             title = ('ผลการค้นหา : ' + name)
             search = "%{}%".format(name)
 
+            if not name:
+                return render_template('search.html')
+
             if session['role'] == "youtuber":
                 users = db.session.query(User).filter(
                     and_(User.fullname.like(search), User.role == "sponsor")).all()
@@ -175,7 +185,7 @@ class SearchProfile(View):
                 users = db.session.query(User).filter(
                     and_(User.fullname.like(search), User.role == "youtuber")).all()
 
-            tags,fetch = [],[]
+            tags, fetch = [], []
             for i in range(len(users)):
 
                 b = Style.showTag(users[i].id)
@@ -223,24 +233,34 @@ class APIs(View):
     # API VIDEO
 
     def vdo(channelID):
-        api_key = "AIzaSyBcS6kuesLl9bin3DZMaTV0zUwaWWQbVxY"
+        # me       AIzaSyBcS6kuesLl9bin3DZMaTV0zUwaWWQbVxY
+        # rmuti    AIzaSyAae50fLK2RJv8DDJg93SX08H0uEPCiuuU
+
+        api_key = "AIzaSyAae50fLK2RJv8DDJg93SX08H0uEPCiuuU"
         youtube = build("youtube", "v3", developerKey=api_key)
         request = youtube.search().list(
             part="snippet",
             channelId=channelID,
             order="date",
+            maxResults=3
         )
         response = request.execute()
-        vidId = response["items"][0]["id"]["videoId"]
-        vidTitle = response["items"][0]["snippet"]["title"]
-        vidPic = response["items"][0]["snippet"]["thumbnails"]["high"]["url"]
 
-        return [vidId, vidTitle, vidPic]
+        datas = []
+        for x in range(3):
+            a = []
+            vidId = response["items"][x]["id"]["videoId"]
+            vidTitle = response["items"][x]["snippet"]["title"]
+            vidPic = response["items"][x]["snippet"]["thumbnails"]["high"]["url"]
 
+            temp = response["items"][x]["snippet"]["publishedAt"]
+            vidDate = ('%.10s' % temp)
 
-# {{vdo[count.value][1]}}
-# <div class="card">
-#     <a data-fancybox href="https://www.youtube.com/watch?v={{vdo[count.value][0]}}">
-#         <img src="{{vdo[count.value][2]}}" alt="pic" style="max-width: 10%">
-#     </a>
-# </div>
+            a.append(vidId)
+            a.append(vidTitle)
+            a.append(vidPic)
+            a.append(vidDate)
+
+            datas.append(a)
+
+        return datas

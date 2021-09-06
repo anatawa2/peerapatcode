@@ -1,29 +1,80 @@
 {% extends 'layout.html' %}
 
-{% block head %} {% endblock %}
+{% block head %}
+<style>
+    .imgs>img {
+        box-shadow: 0px 0px 20px;
+        border-radius: 7px;
+        max-width: 20%;
+    }
+
+    .containers {
+        position: relative;
+        width: 100%;
+    }
+
+
+
+    .play {
+        opacity: 1;
+        display: block;
+        width: 100%;
+        height: auto;
+        transition: .5s ease;
+        backface-visibility: hidden;
+    }
+
+    .middle {
+        transition: .5s ease;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .containers:hover .play {
+        opacity: 0.3;
+    }
+
+    .containers:hover .middle {
+        opacity: 1;
+    } 
+
+    @media screen and (max-width: 999px) {
+        .imgs>img {
+            max-width: 50%;
+        }
+    }
+</style>
+{% endblock %}
+{% block title %} {{api.0}} {% endblock %}
 
 {% block content %}
+border: 1px solid rgb(201, 201, 201);
+
 
 <br><br><br><br><br>
-<div align="center" class="rounded mx-auto d-block">
-    <img src="{{api.5}}" alt="pic" style="max-width: 10%">
+<div align="center" class="imgs">
+    <img src="{{api.5}}" alt="pic">
     <br>
 </div>
-<br>
+<br><br>
 <div class="container">
 
     <table class="table table-bordered">
 
-        <body>
-            <tr>
+        <tbody>
+            <tr style="color: #300000">
                 <th>ช่อง</th>
-
                 <th>
                     {{api.0}}
                 </th>
 
             </tr>
-        </body>
+        </tbody>
 
         <body>
             <tr>
@@ -31,25 +82,25 @@
                 <td>
                     {% for tag in tags %}
 
-                    / {{tag}}
+                    <a style="color:#d62828" href="/search/tag/{{tag}}">#{{tag}}&nbsp;</a>
 
                     {% endfor %}
-                </td>
-            </tr>
-        </body> 
-
-        <body>
-            <tr>
-                <td>เกี่ยวกับเรา</td>
-                <td>
-                  {{data.desc}} 
                 </td>
             </tr>
         </body>
 
         <body>
             <tr>
-                <td>มียอดผติดตาม</td>
+                <td>เกี่ยวกับเรา</td>
+                <td>
+                    {{data.desc}}
+                </td>
+            </tr>
+        </body>
+
+        <body>
+            <tr>
+                <td>มียอดผู้ติดตาม</td>
                 <td>
                     {{api.1}}
                 </td>
@@ -81,27 +132,62 @@
             </tr>
         </body>
 
-        <tbody>
+        <body>
             <tr>
                 <td>เรทการว่าจ้าง</td>
-                <td>{{data.pay_rate}}</td>
+                <td>{{data.pay_rate}} /คลิป</td>
             </tr>
-        </tbody>
-        <tbody>
+        </body>
+
+        <body>
             <tr>
                 <td>ช่องสร้างเมื่อ</td>
                 <td>
                     {{api.4}} (YYYY/MM/DD)
                 </td>
             </tr>
-        </tbody>
+        </body>
     </table>
-</div>
-<br><br>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/{{vdo}}" title="YouTube video player"
-    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen></iframe>
+    <main>
+        <br><br>
+        <h3 style="color: #300000">Lastest Videos</h3><br><br>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
+            {% for vdo in vdos %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="containers">
+                        <a href="https://www.youtube.com/embed/{{vdo[0]}}" data-fancybox data-type="iframe" autoplay;
+                            data-preload="false">
+                            <img src="{{vdo[2]}}" alt="vid" width="100%" height="100%" class="play">
+                            <div class="middle">
+                                <div class="text"> <img src="/static/button.png">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card-body">
+                        <p class="card-text">{{vdo[1]}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- <div class="btn-group">
+                                <a href="https://www.youtube.com/watch?v={{vdo[0]}}" target="_blank" type="button"
+                                    class="btn btn-sm btn-outline-secondary">Go to youtube</a>
+                            </div> -->
+                            <small class="text-muted">{{vdo[3]}}</small> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </main>
+
+
+
+</div>
+<br><br><br><br><br><br>
 
 
 
