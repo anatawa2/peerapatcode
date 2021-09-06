@@ -33,16 +33,6 @@ class User(db.Model):
     def __repr__(self):
         return '<User id: {self.id}, username: {self.username}, password: {self.password}, fullname: {self.fullname}, desc: {self.desc}, email: {self.email},role: {self.role},  id_channel: {self.id_channel}, pay_rate: {self.pay_rate}, pic: {self.pic}>'
 
-
-
-
-class Img(db.Model):
-
-    id = db.Column(db.Integer, primary_key=True)
-    owner = db.Column(db.Integer, nullable=False) 
-    name = db.Column(db.Text, nullable=False)
-
-    def __repr__(self):
-        return '<User id: {self.id}, owner: {self.owner}, name: {self.name}>'
+ 
 
 
