@@ -41,7 +41,7 @@
 
     .containers:hover .middle {
         opacity: 1;
-    } 
+    }
 
     @media screen and (max-width: 999px) {
         .imgs>img {
@@ -49,6 +49,8 @@
         }
     }
 </style>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> 
 {% endblock %}
 {% block title %} {{api.0}} {% endblock %}
 
@@ -100,7 +102,7 @@ border: 1px solid rgb(201, 201, 201);
 
         <body>
             <tr>
-                <td>มียอดผู้ติดตาม</td>
+                <td>ยอดผู้ติดตาม</td>
                 <td>
                     {{api.1}}
                 </td>
@@ -141,7 +143,7 @@ border: 1px solid rgb(201, 201, 201);
 
         <body>
             <tr>
-                <td>ช่องสร้างเมื่อ</td>
+                <td>ช่องถูกสร้างเมื่อ</td>
                 <td>
                     {{api.4}} (YYYY/MM/DD)
                 </td>
@@ -151,9 +153,12 @@ border: 1px solid rgb(201, 201, 201);
 
     <main>
         <br><br>
-        <h3 style="color: #300000">Lastest Videos</h3><br><br>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
+        <h3 style="color: #300000">Latest Videos</h3><br><br>
+        {% set count = namespace(value=0) %}
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% for vdo in vdos %}
+            {% set count.value = count.value + 1 %}
             <div class="col">
                 <div class="card shadow-sm">
                     <div class="containers">
@@ -174,13 +179,172 @@ border: 1px solid rgb(201, 201, 201);
                                 <a href="https://www.youtube.com/watch?v={{vdo[0]}}" target="_blank" type="button"
                                     class="btn btn-sm btn-outline-secondary">Go to youtube</a>
                             </div> -->
-                            <small class="text-muted">{{vdo[3]}}</small> 
+                            <small class="text-muted">{{vdo[3]}}</small>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {% if count.value == 3 %}
+            {% break %}
+            {% endif %}
+
             {% endfor %}
         </div>
+
+
+        {% set count = namespace(value=0) %}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for vdo in vdos %}
+            {% set count.value = count.value + 1 %}
+
+            {% if count.value == 7 %}
+            {% break %}
+            {% endif %}
+
+            {% if count.value >= 4 %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="containers">
+                        <a href="https://www.youtube.com/embed/{{vdo[0]}}" data-fancybox data-type="iframe" autoplay;
+                            data-preload="false">
+                            <img src="{{vdo[2]}}" alt="vid" width="100%" height="100%" class="play">
+                            <div class="middle">
+                                <div class="text"> <img src="/static/button.png">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card-body">
+                        <p class="card-text">{{vdo[1]}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- <div class="btn-group">
+                                <a href="https://www.youtube.com/watch?v={{vdo[0]}}" target="_blank" type="button"
+                                    class="btn btn-sm btn-outline-secondary">Go to youtube</a>
+                            </div> -->
+                            <small class="text-muted">{{vdo[3]}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+    </main>
+
+    <main>
+        <br><br><br><br>
+        <h3 style="color: #300000">Graph :</h3><br><br>
+
+        <div align="center">
+            <div id="views" style="width:100%; max-width:700px; height:500px;"></div>
+            <div id="likes" style="width:100%; max-width:700px; height:500px;"></div>
+            <br><br>
+            <canvas id="all" style="width:100%;max-width:600px"></canvas>
+        </div>
+
+ 
+        <script>
+            google.charts.load('current', { packages: ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                // Set Data
+                var data = google.visualization.arrayToDataTable([
+                    ['Video', 'Views'],
+
+            {% set count = namespace(value = 0) %}
+
+            {% for view in views %}
+            {% set count.value = count.value + 1 %}
+
+                [{{ count.value }}, {{ view }}],
+
+
+            {% endfor %}
+
+                
+                ]);
+            // Set Options
+            var options = {
+                title: 'Videos & Views',
+                hAxis: { title: 'Video  (10 = Latest Video)' },
+                vAxis: { title: 'Views' },
+                legend: 'none'
+            };
+            // Draw
+            var chart = new google.visualization.LineChart(document.getElementById('views'));
+            chart.draw(data, options);
+            }
+        </script>
+
+        <script>
+            google.charts.load('current', { packages: ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                // Set Data
+                var data = google.visualization.arrayToDataTable([
+                    ['Video', 'Likes'],
+
+            {% set count = namespace(value = 0) %}
+
+            {% for like in likes %}
+            {% set count.value = count.value + 1 %}
+
+                [{{ count.value }}, {{ like }}],
+
+
+            {% endfor %}
+
+                
+                ]);
+            // Set Options
+            var options = {
+                title: 'Videos & Likes',
+                hAxis: { title: 'Video  (10 = Latest Video)' },
+                vAxis: { title: 'Likes' },
+                legend: 'none'
+            };
+            // Draw
+            var chart = new google.visualization.LineChart(document.getElementById('likes'));
+            chart.draw(data, options);
+            }
+        </script>
+
+        <script>
+            var xValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+            new Chart("all", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        data: [{% for dislike in dislikes %}{{dislike}} , {% endfor %}],
+                borderColor: "red",
+                fill: false
+                    }, {
+                    data: [{% for like in likes %}{{like}} , {% endfor %}],
+                    borderColor: "green",
+                    fill: false
+                }]
+                },
+                options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: "Green:Likes / Red:Dislikes",
+                    fontSize: 24
+
+                }
+            }
+            });
+
+
+        </script>
+
 
     </main>
 

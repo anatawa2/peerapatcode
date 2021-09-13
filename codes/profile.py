@@ -42,12 +42,12 @@ class UpdateProfile(View):
                 h = request.form['id_channel']
                 updated = Conn.toUpdateYT(a, b, c, d, e, f, g, h)
 
-            else:                
+            else:
                 try:
                     UpdateProfile.uploadIMG()
                 except:
-                    pass             
-                    
+                    pass
+
                 updated = Conn.toUpdateSP(a, b, c, d, e, f)
 
             flash('UPDATED')
@@ -163,8 +163,27 @@ class Visit(View):
         tags = Style.showTag(id)
 
         fetch = APIs.ID(user.id_channel)
-        vdo = APIs.vdo(user.id_channel)
-        return render_template('visit.html', data=user, tags=tags, api=fetch, vdos=vdo, searchpage=True)
+        # vdo = APIs.vdo(user.id_channel)
+
+        # viewCount, likeCount, dislikeCount = [], [], []
+        # for i in range(10):
+
+        #     a = APIs.statistics(vdo[i][0])
+        #     viewCount.append(a[0])
+        #     likeCount.append(a[1])
+        #     dislikeCount.append(a[2])
+
+        vdo = [12,121,12,12,12,454]
+        viewCount = [10000,200000,345540,400000,500000,600000,700000,800000,900000,1000000]
+        likeCount = [1000,20000,34550,40000,50000,60000,70000,80000,90000,100000] 
+        dislikeCount = [100,2000,3450,4000,5000,6000,7000,8000,9000,10000]  
+
+        vdo.reverse()
+        viewCount.reverse()
+        likeCount.reverse()
+        dislikeCount.reverse()              
+
+        return render_template('visit.html',  data=user, tags=tags, api=fetch, vdos=vdo, views=viewCount, likes=likeCount, dislikes=dislikeCount , searchpage=True)
 
 
 # SEARCH
@@ -230,7 +249,7 @@ class APIs(View):
 
         return [titleChannel, subscriberCount, viewCount, videoCount, publishedAt, pic]
 
-    # API VIDEO
+    # API SEARCH VIDEO
 
     def vdo(channelID):
         # me       AIzaSyBcS6kuesLl9bin3DZMaTV0zUwaWWQbVxY
@@ -242,12 +261,12 @@ class APIs(View):
             part="snippet",
             channelId=channelID,
             order="date",
-            maxResults=3
+            maxResults=10
         )
         response = request.execute()
 
         datas = []
-        for x in range(3):
+        for x in range(10):
             a = []
             vidId = response["items"][x]["id"]["videoId"]
             vidTitle = response["items"][x]["snippet"]["title"]
@@ -263,4 +282,28 @@ class APIs(View):
 
             datas.append(a)
 
+        # [('vidId','vidTitle','vidPic','vidDate'),('vidId','vidTitle','vidPic','vidDate')]
         return datas
+
+    # API Statistics
+
+    def statistics(channelID):
+
+        # me       AIzaSyBcS6kuesLl9bin3DZMaTV0zUwaWWQbVxY
+        # rmuti    AIzaSyAae50fLK2RJv8DDJg93SX08H0uEPCiuuU
+
+        api_key = "AIzaSyAae50fLK2RJv8DDJg93SX08H0uEPCiuuU"
+        youtube = build("youtube", "v3", developerKey=api_key)
+        request = youtube.videos().list(
+            part="statistics",
+            id=channelID,
+        ) 
+
+        response = request.execute()
+
+        viewCount = response["items"][0]["statistics"]["viewCount"]
+        likeCount = response["items"][0]["statistics"]["likeCount"]
+        dislikeCount = response["items"][0]["statistics"]["dislikeCount"]
+        # commentCount = response["items"][0]["statistics"]["commentCount"]
+
+        return [viewCount, likeCount, dislikeCount]

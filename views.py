@@ -64,6 +64,7 @@ class Style():
     # selectTag = ['Entertainment', 'History']
     def setTag(ID, selectTag):
 
+        # reset ALL TAG = 0
         for count in range(27):
             stmt1 = (delete(style).where(style.c.user_id == ID, style.c.tag_id == count+1))
             db.session.execute(stmt1)
