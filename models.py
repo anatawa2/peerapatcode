@@ -1,9 +1,11 @@
+import datetime
 from app import db
-from sqlalchemy import or_, and_, delete 
+from sqlalchemy import or_, and_, delete, desc, asc
+from datetime import datetime
 
 style = db.Table('style',
                  db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
-                 db.Column('user_id', db.Integer, db.ForeignKey('user.id'))                 
+                 db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
                  )
 
 
@@ -32,7 +34,29 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User id: {self.id}, username: {self.username}, password: {self.password}, fullname: {self.fullname}, desc: {self.desc}, email: {self.email},role: {self.role},  id_channel: {self.id_channel}, pay_rate: {self.pay_rate}, pic: {self.pic}>'
-
  
 
+chatrooms = db.Table('chatrooms',
+                    db.Column('id', db.Integer, primary_key=True),
+                    db.Column('my_id', db.Integer, db.ForeignKey('user.id')),
+                    db.Column('room_id', db.String(100), db.ForeignKey('chat.chatroom')),
 
+                    db.Column('user_name', db.String(100)),
+                    db.Column('room_message', db.String(255)),
+                    db.Column('flag', db.String(255)),
+                    db.Column('user_pic', db.Text),
+                    db.Column('date_time', db.DateTime, default=datetime.now())
+                    )
+
+
+class Chat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    chatroom = db.Column(db.String(200))
+    username = db.Column(db.String(100))
+    message = db.Column(db.String(255))
+    pic = db.Column(db.Text) 
+    date_time = db.Column(db.DateTime, default=datetime.now())
+    chatting = db.relationship('User', secondary=chatrooms)
+
+    def __repr__(self):
+        return '<Chat id: {self.id}, chatroom: {self.chatroom} , message: {self.message}, date_time: {self.date_time}>'

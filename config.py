@@ -7,6 +7,7 @@ class Config:
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'+ os.path.join(BASE_DIR, 'dbnaja.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False 
+    SECRET_KEY = 'superman'
     PERMANENT_SESSION_LIFETIME = timedelta(days=90) 
  
 

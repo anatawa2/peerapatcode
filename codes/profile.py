@@ -1,10 +1,12 @@
 import os
+import requests
 from flask import render_template, request, flash, session, url_for, redirect
 from views import *
 from flask.views import View
 from werkzeug.utils import secure_filename
 from googleapiclient.discovery import build
 import random
+from datetime import datetime
 
 
 class MyProfile(View):
@@ -12,17 +14,18 @@ class MyProfile(View):
         if 'loggedin' in session:
             me = session['id']
             profile = Conn.toProfile(me)
+            notify = Conn.showNotify(me)
             tags = Style.showPos(me)
             show = Style.showTag(me)
-            api = ''
-
+            api = ''        
+            
             if session['role'] == 'youtuber':
                 try:
                     api = APIs.ID(profile.id_channel)
                 except:
                     api = ''
 
-            return render_template('/profile.html', data=profile, tag=tags, api=api, showtag=show, profilepage=True)
+            return render_template('/profile.html', data=profile, tag=tags, api=api, showtag=show, notify=notify , profilepage=True)
 
         return render_template('/login.html')
 
@@ -38,15 +41,23 @@ class UpdateProfile(View):
             f = request.form['payrate']
 
             if session['role'] == "youtuber":
-                g = request.form['pic']
-                h = request.form['id_channel']
-                updated = Conn.toUpdateYT(a, b, c, d, e, f, g, h)
+                # save img
+                pic = request.form['pic']
+                try:
+                    UpdateProfile.uploadIMG2(pic)
+                except:
+                    pass
+
+                g = request.form['id_channel']
+                updated = Conn.toUpdateYT(a, b, c, d, e, f, g)
 
             else:
                 try:
                     UpdateProfile.uploadIMG()
+                    print('save')
                 except:
                     pass
+                    print('fail')
 
                 updated = Conn.toUpdateSP(a, b, c, d, e, f)
 
@@ -66,13 +77,13 @@ class UpdateProfile(View):
         last_upload = ''
         maindir = 'static/uploads/'
         me = str(session['id'])
-        user = Conn.toProfile(me)
+        user = Conn.toProfile(me) 
 
         if user:
             last_upload = user.pic
 
         if last_upload:
-            os.remove(maindir + me + '/' + last_upload)
+            os.remove(last_upload[1:])
 
         path = os.path.join(maindir, me + '/')
 
@@ -80,10 +91,45 @@ class UpdateProfile(View):
             os.makedirs(path)
 
         FilePath.save(os.path.join(maindir + me + '/', filename))
-        updated = Conn.uploadImg(me, filename)
+        updated = Conn.uploadImg(
+            me, ('/static/uploads/' + str(me) + '/' + filename)) 
 
         # flash('Updated')
         return redirect(url_for('profile', img=updated))
+
+    def uploadIMG2(pic):
+
+        me = str(session['id'])
+
+        r = requests.get(pic)
+
+        last_upload = ''
+        maindir = 'static/uploads/'
+        user = Conn.toProfile(me)
+
+        if user:
+            last_upload = user.pic
+
+        if last_upload:
+            user.pic = ''
+            db.session.commit()
+
+        path = os.path.join(maindir, me + '/')
+
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        save_path = maindir + me
+        file_name = me + session['role'] + '.jpg'
+
+        completeName = os.path.join(save_path, file_name)
+
+        with open(completeName, "wb") as file:
+            file.write(r.content)
+
+        updated = Conn.uploadImg(me, ('/' + maindir + me + '/' + file_name))
+
+        return redirect(url_for('profile'))
 
 
 # UPDATE USER TAG
@@ -102,10 +148,13 @@ class SaveTag(View):
 # Search By Tag
 class SearchByTag(View):
     def dispatch_request(self):
-        return render_template('tag.html', tagpage=True)
+        notify = Conn.showNotify(session['id'])
+        return render_template('tag.html', notify=notify ,tagpage=True)
+
 
     def getTag(tag):
 
+        notify = Conn.showNotify(session['id'])
         tagID = name2id(tag)
         users = Style.byTag(tagID)
 
@@ -119,12 +168,14 @@ class SearchByTag(View):
                 a = APIs.ID(users[i].id_channel)
                 fetch.append(a)
 
-        return render_template('result.html', datas=users, fetch=fetch, tags=tags, title=tag, tagpage=True)
+        return render_template('result.html', notify=notify , datas=users, fetch=fetch, tags=tags, title=tag, tagpage=True)
 
 
 # HOME PAGE
 class Recommended(View):
     def dispatch_request(self):
+ 
+        notify = Conn.showNotify(session['id'])
 
         if 'loggedin' not in session:
             session['temp'] = ''
@@ -151,7 +202,7 @@ class Recommended(View):
                 a = APIs.ID(users[i].id_channel)
                 fetch.append(a)
 
-        return render_template('result.html', datas=indx, fetch=fetch, tags=tags, title=title, homepage=True)
+        return render_template('result.html', notify=notify, datas=indx, fetch=fetch, tags=tags, title=title, homepage=True)
 
 
 # USER PROFILE
@@ -159,10 +210,18 @@ class Visit(View):
 
     # /visit/<id>
     def VisitTo(id):
+        notify = Conn.showNotify(session['id'])
         user = Conn.toProfile(id)
         tags = Style.showTag(id)
 
         fetch = APIs.ID(user.id_channel)
+        o = fetch[4] 
+        a = o[8:]
+        b = o[5:7]
+        c = o [:4]
+        date = a + ' / ' + b + ' / ' + c 
+
+
         # vdo = APIs.vdo(user.id_channel)
 
         # viewCount, likeCount, dislikeCount = [], [], []
@@ -173,23 +232,27 @@ class Visit(View):
         #     likeCount.append(a[1])
         #     dislikeCount.append(a[2])
 
-        vdo = [12,121,12,12,12,454]
-        viewCount = [10000,200000,345540,400000,500000,600000,700000,800000,900000,1000000]
-        likeCount = [1000,20000,34550,40000,50000,60000,70000,80000,90000,100000] 
-        dislikeCount = [100,2000,3450,4000,5000,6000,7000,8000,9000,10000]  
+        vdo = [12, 121, 12, 12, 12, 454]
+        viewCount = [10000, 200000, 345540, 400000, 500000,
+                     600000, 700000, 800000, 900000, 1000000]
+        likeCount = [1000, 20000, 34550, 40000,
+                     50000, 60000, 70000, 80000, 90000, 100000]
+        dislikeCount = [100, 2000, 3450, 4000,
+                        5000, 6000, 7000, 8000, 9000, 10000]
 
         vdo.reverse()
         viewCount.reverse()
         likeCount.reverse()
-        dislikeCount.reverse()              
+        dislikeCount.reverse()
 
-        return render_template('visit.html',  data=user, tags=tags, api=fetch, vdos=vdo, views=viewCount, likes=likeCount, dislikes=dislikeCount , searchpage=True)
+        return render_template('visit.html', date=date, notify=notify, data=user, tags=tags, api=fetch, vdos=vdo, views=viewCount, likes=likeCount, dislikes=dislikeCount, searchpage=True)
 
 
 # SEARCH
 class SearchProfile(View):
     def dispatch_request(self):
         if request.method == "POST":
+            notify = Conn.showNotify(session['id'])
             name = request.form['search']
             title = ('ผลการค้นหา : ' + name)
             search = "%{}%".format(name)
@@ -214,11 +277,12 @@ class SearchProfile(View):
                     a = APIs.ID(users[i].id_channel)
                     fetch.append(a)
 
-        return render_template('result.html', datas=users, fetch=fetch, tags=tags, title=title, searchpage=True)
+        return render_template('result.html',notify=notify, datas=users, fetch=fetch, tags=tags, title=title, searchpage=True)
 
     def searchName():
+        notify = Conn.showNotify(session['id'])
 
-        return render_template('search.html', searchpage=True)
+        return render_template('search.html', notify=notify, searchpage=True)
 
 
 class APIs(View):
@@ -297,7 +361,7 @@ class APIs(View):
         request = youtube.videos().list(
             part="statistics",
             id=channelID,
-        ) 
+        )
 
         response = request.execute()
 

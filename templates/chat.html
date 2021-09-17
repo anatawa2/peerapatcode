@@ -1,0 +1,218 @@
+{% extends 'layout.html' %}
+{% block title %} ค้นหา {% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='/css/Chatbox.css')}}">
+{% endblock %}
+{% block content %}
+
+<style>
+    .bg-light {
+        background-color: #fff2f2 !important;
+    }
+
+    .btn-link {
+        color: #28d0d6;
+    }
+
+    .imgbox {
+
+        margin-top: 40px;
+        margin-left: 150px;
+
+    }
+
+    .fonttext {
+        margin: 10px 30px;
+        width: 400px;
+        /* padding-left: 120px; */
+        text-align: center;
+        font-size: 30px;
+    }
+
+    .bg-primary {
+        background-color: #fff2f2 !important;
+    }
+
+    .text-white {
+        color: #6c757d !important;
+    }
+</style>
+
+<br><br><br>
+<div class="container">
+    <br><br>
+
+    <div class="row rounded-lg overflow-hidden shadow">
+        <!-- Users box-->
+        <div class="col-5 px-0">
+            <div class="bg-white">
+
+
+
+                <div class="messages-box">
+                    {% for data in picbox %}
+
+                    <div class="imgbox"> <img src="{{data.user_pic}}" alt="{{ data.username }}" width="150"
+                            class="rounded-circle" style="box-shadow: 0px 0px 1px"></div>
+                    <div class="fonttext">
+                        <p> {{data.user_name}}</p>
+                    </div>
+
+
+
+
+                    {% endfor %}
+
+                    {% if not picbox %}
+                    <br><br><br>
+                    <div class="imgbox"> <img src="{{startchat.pic}}" alt="{{startchat.fullname}}" width="150"
+                            class="rounded-circle" style="box-shadow: 0px 0px 1px"></div>
+                    <div class="fonttext">
+                        <p> {{startchat.fullname}} </p>
+                        <p> เริ่มต้นการสนทนาเลย </p>
+                    </div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+        <!-- Chat Box-->
+        <div class="col-7 px-0">
+            <div id="content" class="px-4 py-6 chat-box bg-white">
+                <br>
+
+                {% for message in history %}
+
+                {% if message.message == 'Xx_st4rt|r00m_xX' %}
+                {% continue %}
+                {% endif %}
+
+                {% if message.username == me %}
+                <!-- sender -->
+                <div class="media w-50 ml-auto mb-3">
+                    <img src="{{message.pic}}" alt="{{ message.username }}" width="50" class="rounded-circle">
+
+                    <div class="media-body">
+                        <div class="bg-primary rounded py-2 px-3 mb-2">
+                            <p class="text-small mb-0 text-white">{{ message.message }}</p>
+                        </div>
+                        <p class="small text-muted">{{ message.date_time.strftime("%H:%M u. | %d %b ,%Y") }}</p>
+                    </div>
+                </div>
+
+                {% else %}
+
+                <div class="media w-50 mb-3">
+                    <img src="{{message.pic}}" alt="{{ message.username }}" width="50" class="rounded-circle">
+
+                    <div class="media-body ml-3">
+                        <div class="bg-light rounded py-2 px-3 mb-2">
+                            <p class="text-small mb-0 text-muted">{{ message.message }}</p>
+                        </div>
+                        <p class="small text-muted">{{ message.date_time.strftime("%H:%M u. | %d %b ,%Y") }}</p>
+                    </div>
+                </div>
+
+
+                {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+            <!-- Typing area -->
+            <div class="bg-light">
+                <div class="input-group">
+                    <input id="chat_text" type="text" placeholder="Type a message" aria-describedby="chat_btn"
+                        class="form-control rounded-0 border-0 py-4 bg-light">
+                    <div class="input-group-append">
+                        <button id="chat_btn" type="submit" class="btn btn-link"> <i
+                                class="fa fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<input id="username_input" class="input" type="hidden" value="{{me}}">
+
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+
+
+<script>
+
+    $(function () {
+
+        let username;
+        username = $('#username_input').val();
+
+        $('#chat_btn').on('click', function () {
+
+            let message = $('#chat_text').val();
+
+            $.post('/messages/send', { 'username': username, 'message': message }, function () {
+                $('#chat_text').val('');
+            });
+
+
+        });
+
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('37d67f096ee63c8b35d7', {
+            cluster: 'ap1'
+        });
+        var channel = pusher.subscribe('{{rooms}}');
+
+        channel.bind('new-message', function (data) {
+
+            let name = data.username;
+            let message = data.message;
+            let datetime = data.datetime;
+            let pic = data.pic;
+
+            let message_template = `<div class="media w-50 ml-auto mb-3">
+                                        <img src="${pic}" alt="${name}" width="50" class="rounded-circle">
+                                        <div class="media-body">
+                                            <div class="bg-primary rounded py-2 px-3 mb-2">
+                                                <p class="text-small mb-0 text-white">${message}</p>
+                                            </div>
+                                            <p class="small text-muted">${datetime}</p>
+                                        </div>
+                                    </div>`;
+            $('#content').append(message_template);
+            objDiv.scrollTop = objDiv.scrollHeight;
+
+
+
+
+
+        });
+
+        let objDiv = document.getElementById("content");
+        objDiv.scrollTop = objDiv.scrollHeight;
+
+    });
+
+</script>
+
+<script>
+    var input = document.getElementById("chat_text");
+    input.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("chat_btn").click();
+        }
+    });
+</script>
+
+
+{% endblock %}

@@ -1,9 +1,12 @@
 {% extends 'layout.html' %}
-{% block title %} ค้นหา {% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{url_for('static', filename='/css/Button.css')}}">
 {% endblock %}
+
+{% block title %} ค้นหา {% endblock %}
+
 {% block content %}
+
 
 
 
@@ -14,7 +17,7 @@
             <div style="margin-top:20px; text-align:left">
                 <p align="center">
                     <br>
-                <h2>ป้อนรายชื่อที่ต้องการค้นหา</h2>
+                <h2>ป้อนรายชื่อที่ต้องการค้นหา</h2> 
                 </p>
                 <form action="/search/profile" method="POST">
                     <div class="form-group">

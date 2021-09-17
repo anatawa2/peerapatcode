@@ -1,0 +1,76 @@
+{% extends 'layout.html' %}
+{% block title %} ค้นหา {% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='/css/Chatbox.css')}}">
+{% endblock %}
+{% block content %}
+
+<style> 
+    .list-group-item-light {
+    color: #140101;
+    
+}
+</style>
+
+<br><br><br>
+<div class="container" style="width: 700px">
+    <br><br>
+
+
+    <div class="bg-gray px-4 py-2 bg-light">
+        <p class="h5 mb-0 py-1">{{myname}}' Inbox</p>
+    </div>
+
+ 
+    {% set count = namespace(value=0) %}
+    {% set url = namespace(value=0) %}
+    {% for list in inbox %}
+
+    
+ 
+
+
+    <a href="/messages/{{urId[url.value]}}"
+        class="list-group-item list-group-item-action list-group-item-light" 
+        
+        {%if list.flag == '0' %}
+        style="background-color: #ffe4e4;"
+        {% else %} 
+        {% endif %}
+        
+        >
+        <div class="media">
+
+            <img src="{{list.user_pic}}" alt="user" width="100" class="rounded-circle">
+
+            <div class="media-body ml-4">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                    <h6 class="mb-0">{{list.user_name}}</h6><small class="small font-weight-bold">
+                        {{list.date_time.strftime("%H:%M u. | %d %b ,%Y")}}
+                        
+                    </small>
+                </div>
+                {% if myMsg[count.value] %}
+                <p class="font-italic mb-0 text-small">You : {{list.room_message}}</p>
+                {% else %}
+                <p class="font-italic mb-0 text-small">{{list.room_message}}</p>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+
+    {% set url.value = url.value + 1 %}
+    {% set count.value = count.value + 1 %}
+    {% endfor %}
+
+
+
+</div>
+
+
+
+
+
+
+{% endblock %}

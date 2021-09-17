@@ -24,6 +24,8 @@
     import { Fancybox } from "https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.esm.js";
   </script>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 
   {% block head %}
@@ -62,6 +64,22 @@
               <span data-hover="ประเภท">ประเภท</span>
             </a>
           </li>
+          <li class="nav-item {% if msgpage %} active {% endif %}">
+            <a href="/inbox" class="nav-link"> 
+              {% if notify == 0 %} 
+              <div class="notification">
+                <span data-hover="ข้อความ">ข้อความ</span>
+                <div class="badge"></div>
+              </div>
+              {% else %}
+              <div class="notification">
+                <span data-hover="ข้อความ">ข้อความ</span>
+                <div class="badge">{{notify}}</div>
+              </div>
+              {% endif %}
+
+            </a>
+          </li>
           <li class="nav-item {% if profilepage %} active {% endif %}">
             <a href="/profile" class="nav-link">
               <span data-hover="ข้อมูลส่วนตัว">ข้อมูลส่วนตัว</span>
@@ -77,6 +95,30 @@
       </div>
     </div>
   </nav>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .notification {
+      /* background-color: #555;   */ 
+      position: relative;
+      display: inline-block;
+      border-radius: 2px;
+    }
+
+
+    .notification .badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      padding: 3px 7px;
+      border-radius: 50%;
+      background-color: rgb(255, 57, 57);
+      color: white;
+    }
+  </style>
 
   <main>
     {% block content %}

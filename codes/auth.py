@@ -1,7 +1,6 @@
 from flask import render_template, request, flash, session, url_for, redirect
 from flask.views import View
-from views import *
-from models import *
+from views import * 
 
 
 class IndexView(View):
@@ -90,6 +89,7 @@ class LoginForm(View):
                 elif error is None:
                     session['id'] = user.id
                     session['role'] = user.role
+                    session['fullname'] = user.fullname
                     session['loggedin'] = True
                     session.permanent = remember
 

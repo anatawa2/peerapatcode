@@ -2,6 +2,7 @@
 {% block head %}
 <link rel="stylesheet" href="{{url_for('static', filename='/css/Card.css')}}">
 {% endblock %}
+
 {% block title %} YourPartner {% endblock %}
 
 {% block content %}
@@ -10,7 +11,7 @@
 
 <br><br><br><br><br><br><br>
 <div class='title' align="center">
-    <h1>{{title}}</h1>
+    <h1>{{title}}</h1> 
 </div>
 <br><br><br><br>
 
@@ -25,13 +26,13 @@
 
 
         {% set count = namespace(value=0) %}
-        {% for data in datas %}
+        {% for data in datas %} 
 
         {% if session['role'] == "youtuber" %}
 
         <!-- นามบัตรบริษัท -->
         <div class="box-item">
-            <img src="/static/uploads/{{data.id}}/{{data.pic}}" alt="pic" ">
+            <img src="{{data.pic}}" alt="pic" ">
         <div class=" item">
             <div class="name">
                 <h1>{{data.fullname}}</h1>
@@ -49,7 +50,7 @@
                     <nan>เรทราคา : {{data.pay_rate}}/คลิป</p>
                 </div>
                 <div class="footer-r">
-                    <p>Email : {{data.email}} </p>
+                   <a href="/messages/{{data.id}}"><p>ติดต่อสอบถาม </p></a>
                 </div>
             </div>
         </div>

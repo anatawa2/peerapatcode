@@ -50,7 +50,7 @@
     }
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 {% endblock %}
 {% block title %} {{api.0}} {% endblock %}
 
@@ -72,7 +72,7 @@ border: 1px solid rgb(201, 201, 201);
             <tr style="color: #300000">
                 <th>ช่อง</th>
                 <th>
-                    {{api.0}}
+                    {{api.0}}{{notify}}
                 </th>
 
             </tr>
@@ -145,13 +145,22 @@ border: 1px solid rgb(201, 201, 201);
             <tr>
                 <td>ช่องถูกสร้างเมื่อ</td>
                 <td>
-                    {{api.4}} (YYYY/MM/DD)
+                    {{date}} 
                 </td>
             </tr>
         </body>
     </table>
 
     <main>
+        <br><br>
+
+        <div align="center">
+            <a href="/messages/{{data.id}}">
+                <button class="btn btn-danger"> ส่งข้อความสอบถาม </button>
+            </a>
+        </div>
+
+
         <br><br>
         <h3 style="color: #300000">Latest Videos</h3><br><br>
         {% set count = namespace(value=0) %}
@@ -236,16 +245,23 @@ border: 1px solid rgb(201, 201, 201);
 
     <main>
         <br><br><br><br>
-        <h3 style="color: #300000">Graph :</h3><br><br>
+        <h3 style="color: #300000">Graph : 10 วิดีโอล่าสุดที่อัพโหลด</h3><br><br>
 
         <div align="center">
             <div id="views" style="width:100%; max-width:700px; height:500px;"></div>
             <div id="likes" style="width:100%; max-width:700px; height:500px;"></div>
             <br><br>
-            <canvas id="all" style="width:100%;max-width:600px"></canvas>
+            <canvas id="all" style="width:100%; max-width:600px"></canvas>
         </div>
 
- 
+        <br><br><br><br>
+
+        <div align="center">
+            <a href="/messages/{{data.id}}">
+                <button class="btn btn-danger"> ส่งข้อความสอบถาม </button>
+            </a>
+        </div> 
+
         <script>
             google.charts.load('current', { packages: ['corechart'] });
             google.charts.setOnLoadCallback(drawChart);
@@ -255,21 +271,21 @@ border: 1px solid rgb(201, 201, 201);
                 var data = google.visualization.arrayToDataTable([
                     ['Video', 'Views'],
 
-            {% set count = namespace(value = 0) %}
+                    {% set count = namespace(value = 0) %}
 
             {% for view in views %}
             {% set count.value = count.value + 1 %}
 
-                [{{ count.value }}, {{ view }}],
+            [{{ count.value }}, {{ view }}],
 
 
-            {% endfor %}
+                {% endfor %}
 
                 
                 ]);
             // Set Options
             var options = {
-                title: 'Videos & Views',
+                title: 'Views',
                 hAxis: { title: 'Video  (10 = Latest Video)' },
                 vAxis: { title: 'Views' },
                 legend: 'none'
@@ -289,21 +305,21 @@ border: 1px solid rgb(201, 201, 201);
                 var data = google.visualization.arrayToDataTable([
                     ['Video', 'Likes'],
 
-            {% set count = namespace(value = 0) %}
+                    {% set count = namespace(value = 0) %}
 
             {% for like in likes %}
             {% set count.value = count.value + 1 %}
 
-                [{{ count.value }}, {{ like }}],
+            [{{ count.value }}, {{ like }}],
 
 
-            {% endfor %}
+                {% endfor %}
 
                 
                 ]);
             // Set Options
             var options = {
-                title: 'Videos & Likes',
+                title: 'Likes',
                 hAxis: { title: 'Video  (10 = Latest Video)' },
                 vAxis: { title: 'Likes' },
                 legend: 'none'
@@ -322,13 +338,13 @@ border: 1px solid rgb(201, 201, 201);
                 data: {
                     labels: xValues,
                     datasets: [{
-                        data: [{% for dislike in dislikes %}{{dislike}} , {% endfor %}],
+                        data: [{% for dislike in dislikes %}{{ dislike }}, {% endfor %}],
                 borderColor: "red",
                 fill: false
                     }, {
-                    data: [{% for like in likes %}{{like}} , {% endfor %}],
-                    borderColor: "green",
-                    fill: false
+                    data: [{% for like in likes %}{{ like }} , {% endfor %}],
+                borderColor: "green",
+                fill: false
                 }]
                 },
                 options: {

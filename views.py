@@ -1,7 +1,7 @@
-from sqlalchemy.sql.elements import Null
+from flask import render_template, session
 from app import *
 from models import *
- 
+
 
 # @app.route('/')
 # def index():
@@ -11,11 +11,13 @@ from models import *
 class Conn():
 
     def toCheck(a):
-        username = db.session.query(User).filter(or_(User.username == a, User.email == a)).first()
+        username = db.session.query(User).filter(
+            or_(User.username == a, User.email == a)).first()
         return username
 
     def toLogin(a, b):
-        username = db.session.query(User).filter(and_(or_(User.username == a,User.email == a), User.password == b)).first()
+        username = db.session.query(User).filter(
+            and_(or_(User.username == a, User.email == a), User.password == b)).first()
         return username
 
     def toRegister(a, b, c, d, e):
@@ -27,15 +29,19 @@ class Conn():
         profile = db.session.query(User).filter(User.id == a).first()
         return profile
 
-    def toUpdateYT(a, b, c, d, e, f, g , h):
+    def toUpdateYT(a, b, c, d, e, f, g):
         updated = db.session.query(User).filter(User.id == a).first()
         updated.fullname = b
         updated.desc = c
         updated.email = d
         updated.password = e
         updated.pay_rate = f
-        updated.pic = g
-        updated.id_channel = h
+        updated.id_channel = g
+
+        qry = db.session.query(Chat).filter(User.username == a).all()
+        for i in qry:
+            i.pic = g
+
         db.session.commit()
 
     def toUpdateSP(a, b, c, d, e, f):
@@ -51,14 +57,24 @@ class Conn():
         fullname = db.session.query(User).filter(User.fullname == a).first()
         return fullname
 
-    def uploadImg(a, b): 
-        user = db.session.query(User).filter(User.id == a).first() 
+    def uploadImg(a, b):
+        user = db.session.query(User).filter(User.id == a).first()
         user.pic = b
         db.session.commit()
 
         return user
- 
- 
+
+    def showNotify(a):
+        inbox = db.session.query(chatrooms).filter(
+            chatrooms.c.my_id == a).all()
+
+        notify = 0
+        for i in inbox:
+            if i.flag == '0':
+                notify += 1
+        
+        return notify
+
 
 class Style():
     # selectTag = ['Entertainment', 'History']
@@ -66,7 +82,8 @@ class Style():
 
         # reset ALL TAG = 0
         for count in range(27):
-            stmt1 = (delete(style).where(style.c.user_id == ID, style.c.tag_id == count+1))
+            stmt1 = (delete(style).where(
+                style.c.user_id == ID, style.c.tag_id == count+1))
             db.session.execute(stmt1)
             db.session.commit()
 
@@ -90,7 +107,8 @@ class Style():
     # find User by tag_id
 
     def byTag(a):
-        data = db.session.query(User).join(style).filter(style.c.tag_id == a).all()
+        data = db.session.query(User).join(
+            style).filter(style.c.tag_id == a).all()
         return data
 
     def showTag(id):
@@ -118,17 +136,19 @@ def posTag(input):
 
 
 # convert tag_name to tag_id
-def name2id(style):   
-    for k, v in datas.items():  
+def name2id(style):
+    for k, v in datas.items():
         if style == k:
-            return v  # [1 ,6] 
+            return v  # [1 ,6]
 
-# convert tag_id to tag_name 
-def id2name(style):   
-    for k, v in datas.items():  
+# convert tag_id to tag_name
+
+
+def id2name(style):
+    for k, v in datas.items():
         if style == v:
             return k  # ["Enteraintment" ,"Kids"]
-      
+
 
 def posToId(input):   # [1,0,1,0,1]
     c = 0
@@ -136,11 +156,9 @@ def posToId(input):   # [1,0,1,0,1]
     for i in input:
         if i == 1:
             data.append(c)
-        c += 1 
+        c += 1
 
     return data       # [1,3,5]
-            
-
 
 
 # TAG
