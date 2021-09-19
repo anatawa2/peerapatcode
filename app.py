@@ -2,13 +2,15 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import Config 
 from jinja2 import Environment  
-import pusher
+import pusher 
 
 app = Flask(__name__)
 app.config.from_object(Config)  
 
 jinja_env = Environment(extensions=['jinja2.ext.loopcontrols'])
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')  
+ 
+
 
 pusher_client = pusher.Pusher(
             app_id='1266085',

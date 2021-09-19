@@ -21,7 +21,7 @@ class Conn():
         return username
 
     def toRegister(a, b, c, d, e):
-        user = User(username=a, password=b, fullname=c, email=d, role=e)
+        user = User(username=a, password=b, fullname=c, email=d, role=e ,desc='',id_channel ='',pay_rate='')
         db.session.add(user)
         db.session.commit()
 
@@ -75,6 +75,9 @@ class Conn():
         
         return notify
 
+    def sendMail():
+        pass
+
 
 class Style():
     # selectTag = ['Entertainment', 'History']
@@ -120,6 +123,8 @@ class Style():
             x = id2name(i)
             tags.append(x)
         return tags              # ['Entertainment','Education','Travel']
+ 
+
 
 
 # TAG position

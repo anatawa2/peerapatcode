@@ -1,8 +1,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8"> 
-    <title>Login</title> 
+    <meta charset="utf-8">
+    <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 
@@ -70,9 +70,15 @@
                 <label for="cb"> Keep me logged in</label>
             </div>
             {% with msg = get_flashed_messages() %}
-            {% if msg %}
+            {% if msg == ['Register done!'] %}
             {% for message in msg %}
             <br>
+            <h5 style="color: #50e6a7;">{{ message }}</h5> 
+            {% endfor %}
+
+            {% else %}
+            {% for message in msg %}
+            <br> 
             <h5 style="color: #ff0000;">{{ message }}</h5>
             {% endfor %}
             {% endif %}
