@@ -35,7 +35,7 @@ app.add_url_rule('/visit/<id>', view_func=Visit.VisitTo)
 
 # Messagess
 app.add_url_rule('/inbox', view_func=Chatting.as_view('inboxes'))
-app.add_url_rule('/messages/<sendto>', view_func=Chatting.inbox,)
+app.add_url_rule('/messages/<sendto>', view_func=Chatting.inbox)
 app.add_url_rule('/messages/send',
                  view_func=Chatting.message, methods=["POST"])
 

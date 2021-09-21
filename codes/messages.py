@@ -58,8 +58,7 @@ class Chatting(View):
         receiver = b
 
         startchat = Conn.toProfile(b)
-
-        # bug
+ 
         history = db.session.query(Chat).filter(or_(
             Chat.chatroom == (a + "and" + b), Chat.chatroom == (b + "and" + a))).order_by(asc(Chat.id)).all()
 
@@ -200,5 +199,6 @@ class Chatting(View):
         server.send_message(msg)
         server.quit()
  
+
         # yourpartner.no.reply@gmail.com
         # pass: yourpartner1234

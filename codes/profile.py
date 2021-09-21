@@ -222,23 +222,23 @@ class Visit(View):
         date = a + ' / ' + b + ' / ' + c 
 
 
-        # vdo = APIs.vdo(user.id_channel)
+        vdo = APIs.vdo(user.id_channel)
 
-        # viewCount, likeCount, dislikeCount = [], [], []
-        # for i in range(10):
+        viewCount, likeCount, dislikeCount = [], [], []
+        for i in range(10):
 
-        #     a = APIs.statistics(vdo[i][0])
-        #     viewCount.append(a[0])
-        #     likeCount.append(a[1])
-        #     dislikeCount.append(a[2])
+            a = APIs.statistics(vdo[i][0])
+            viewCount.append(a[0])
+            likeCount.append(a[1])
+            dislikeCount.append(a[2])
 
-        vdo = [12, 121, 12, 12, 12, 454]
-        viewCount = [10000, 200000, 345540, 400000, 500000,
-                     600000, 700000, 800000, 900000, 1000000]
-        likeCount = [1000, 20000, 34550, 40000,
-                     50000, 60000, 70000, 80000, 90000, 100000]
-        dislikeCount = [100, 2000, 3450, 4000,
-                        5000, 6000, 7000, 8000, 9000, 10000]
+        # vdo = [12, 121, 12, 12, 12, 454]
+        # viewCount = [10000, 200000, 345540, 400000, 500000,
+        #              600000, 700000, 800000, 900000, 1000000]
+        # likeCount = [1000, 20000, 34550, 40000,
+        #              50000, 60000, 70000, 80000, 90000, 100000]
+        # dislikeCount = [100, 2000, 3450, 4000,
+        #                 5000, 6000, 7000, 8000, 9000, 10000]
 
         vdo.reverse()
         viewCount.reverse()
