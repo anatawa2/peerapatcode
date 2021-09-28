@@ -173,9 +173,7 @@ class SearchByTag(View):
 
 # HOME PAGE
 class Recommended(View):
-    def dispatch_request(self):
- 
-        notify = Conn.showNotify(session['id'])
+    def dispatch_request(self):        
 
         if 'loggedin' not in session:
             session['temp'] = ''
@@ -191,6 +189,7 @@ class Recommended(View):
             random.shuffle(users)
             title = "แชนแนลที่คุณอาจสนใจ"
 
+        notify = Conn.showNotify(session['id'])
         indx, tags, fetch = [], [], []  # [obj,obj,obj]
         for i in range(10):
             indx.append(users[i])
@@ -239,8 +238,7 @@ class Visit(View):
         #              50000, 60000, 70000, 80000, 90000, 100000]
         # dislikeCount = [100, 2000, 3450, 4000,
         #                 5000, 6000, 7000, 8000, 9000, 10000]
-
-        vdo.reverse()
+ 
         viewCount.reverse()
         likeCount.reverse()
         dislikeCount.reverse()
