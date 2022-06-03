@@ -15,6 +15,3 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False 
     SECRET_KEY = 'superman'
     PERMANENT_SESSION_LIFETIME = timedelta(days=90) 
- 
-
-

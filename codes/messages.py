@@ -72,8 +72,7 @@ class Chatting(View):
             # show desc
             if boxDetail:
                 x = Conn.toProfile(boxDetail.ur_id)
-                desc = x.desc
-                # send email (if user has send a message first time )
+                desc = x.desc 
 
         else:
             rooms = (a + "and" + b)
@@ -131,7 +130,7 @@ class Chatting(View):
                 if not send:
                     Chatting.sendMail(myname, urmail)
 
-                # CLEAR >> sender chatroom (for new message)
+                # CLEAR >> sender's chatroom (for new message)
                 try:
                     del_sender = (delete(chatrooms).where(
                         chatrooms.c.my_id == me, chatrooms.c.room_id == rooms))
@@ -142,13 +141,13 @@ class Chatting(View):
 
                 # RECREATE >> chatroom
 
-                # CREATE >> sender INBOX
+                # CREATE >> sender's INBOX
                 create_inbox = chatrooms.insert().values(my_id=me, ur_id=urid, user_pic=urpic, user_name=urname,
                                                          room_id=rooms, room_message=message, date_time=timesent, flag=True)
                 db.session.execute(create_inbox)
 
                 # UPDATE new message for receiver
-                # CLEAR >> receiver chatroom (for new message)
+                # CLEAR >> receiver's chatroom (for new message)
                 try:
                     del_receiver = (delete(chatrooms).where(
                         chatrooms.c.my_id == urid, chatrooms.c.room_id == rooms))
@@ -158,7 +157,7 @@ class Chatting(View):
                     pass
                     print('failed')
 
-                # CREATE NEW >> receiver chatroom (for new message)
+                # CREATE NEW >> receiver's chatroom (for new message)
                 new_receiver = chatrooms.insert().values(my_id=urid, ur_id=me, user_pic=mypic, user_name=myname,
                                                          room_id=rooms, room_message=message, date_time=timesent, flag=False)
                 db.session.execute(new_receiver)
@@ -176,28 +175,28 @@ class Chatting(View):
 
                 return jsonify({'result': 'failure'})
 
-    def sendMail(a, b):
+    # def sendMail(a, b):
 
-        sender_name = a
-        rec_email = b
+    #     sender_name = a
+    #     rec_email = b
 
-        web = "yourpartner.no.reply@gmail.com"
+    #     web = "yourpartner.no.reply@gmail.com"
 
-        msg = EmailMessage()
-        msg['Subject'] = 'คุณได้รับข้อความจาก :' + sender_name
-        msg['From'] = web
-        msg['To'] = rec_email
+    #     msg = EmailMessage()
+    #     msg['Subject'] = 'คุณได้รับข้อความจาก :' + sender_name
+    #     msg['From'] = web
+    #     msg['To'] = rec_email
 
-        msg.set_content(
+    #     msg.set_content(
 
-            '{} เพิ่งได้ส่งข้อความหาคุณ เช็คกล่องข้อความเพื่อเริ่มสนทนากับ {} เลย!\n'
-            'http://127.0.0.1:5000/inbox'.format(a, a)
-        )
+    #         '{} เพิ่งได้ส่งข้อความหาคุณ เช็คกล่องข้อความเพื่อเริ่มสนทนากับ {} เลย!\n'
+    #         'http://127.0.0.1:5000/inbox'.format(a, a)
+    #     )
 
-        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        server.login(web, "yourpartner1234")
-        server.send_message(msg)
-        server.quit()
+    #     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    #     server.login(web, "yourpartner1234")
+    #     server.send_message(msg)
+    #     server.quit()
  
 
         # yourpartner.no.reply@gmail.com

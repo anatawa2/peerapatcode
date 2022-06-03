@@ -38,7 +38,7 @@ class UpdateProfile(View):
             c = request.form['desc']
             d = request.form['email']
             e = request.form['password']
-            f = request.form['payrate']
+            f = request.form['payrate'] 
 
             if session['role'] == "youtuber":
                 # save img
@@ -223,13 +223,13 @@ class Visit(View):
 
         vdo = APIs.vdo(user.id_channel)
 
-        viewCount, likeCount, dislikeCount = [], [], []
+        viewCount, likeCount, commentCount = [], [], []
         for i in range(10):
 
-            a = APIs.statistics(vdo[i][0])
+            a = APIs.statistics(vdo[i][0]) 
             viewCount.append(a[0])
             likeCount.append(a[1])
-            dislikeCount.append(a[2])
+            commentCount.append(a[2])
 
         # vdo = [12, 121, 12, 12, 12, 454]
         # viewCount = [10000, 200000, 345540, 400000, 500000,
@@ -241,9 +241,9 @@ class Visit(View):
  
         viewCount.reverse()
         likeCount.reverse()
-        dislikeCount.reverse()
+        commentCount.reverse()
 
-        return render_template('visit.html', date=date, notify=notify, data=user, tags=tags, api=fetch, vdos=vdo, views=viewCount, likes=likeCount, dislikes=dislikeCount, searchpage=True)
+        return render_template('visit.html', date=date, notify=notify, data=user, tags=tags, api=fetch, vdos=vdo, views=viewCount, likes=likeCount, dislikes=commentCount, searchpage=True)
 
 
 # SEARCH
@@ -365,7 +365,7 @@ class APIs(View):
 
         viewCount = response["items"][0]["statistics"]["viewCount"]
         likeCount = response["items"][0]["statistics"]["likeCount"]
-        dislikeCount = response["items"][0]["statistics"]["dislikeCount"]
-        # commentCount = response["items"][0]["statistics"]["commentCount"]
+        commentCount = response["items"][0]["statistics"]["commentCount"]
+        # dislikeCount = response["items"][0]["statistics"]["dislikeCount"]
 
-        return [viewCount, likeCount, dislikeCount]
+        return [viewCount, likeCount, commentCount]

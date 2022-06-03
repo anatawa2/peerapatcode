@@ -60,7 +60,7 @@ class RoleRegister(View):
 
             flash(error)
 
-        return render_template('/registerform.html',password=password,repassword=repassword)
+        return render_template('/registerform.html')
 
 
 class LoginForm(View):

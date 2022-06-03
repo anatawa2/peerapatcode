@@ -73,10 +73,7 @@ class Conn():
             if i.flag == '0':
                 notify += 1
         
-        return notify
-
-    def sendMail():
-        pass
+        return notify 
 
 
 class Style():

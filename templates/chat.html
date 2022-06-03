@@ -19,8 +19,20 @@
 
                 <div class="messages-box">
                     {% if boxDetail %}
-                    <div class="imgbox"> <img src="{{boxDetail.user_pic}}" alt="{{ boxDetail.user_name}}" width="150"
-                            class="rounded-circle" style="box-shadow: 0px 0px 1px"></div>
+                    {% if session['role'] == 'sponsor' %}
+
+                    <div class="imgbox">
+                        <a href="/visit/{{boxDetail.ur_id}}">
+                            <img src="{{boxDetail.user_pic}}" alt="{{ boxDetail.user_name}}" width="150"
+                                class="rounded-circle" style="box-shadow: 0px 0px 1px">
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="imgbox">
+                        <img src="{{boxDetail.user_pic}}" alt="{{ boxDetail.user_name}}" width="150"
+                            class="rounded-circle" style="box-shadow: 0px 0px 1px">
+                    </div>
+                    {% endif %}
                     <div class="fonttext">
                         <h3> {{boxDetail.user_name}}</h3>
                         {% if desc %}
@@ -38,6 +50,7 @@
                     <div class="fonttext">
                         <h3> {{startchat.fullname}} </h3>
                         <p> เริ่มต้นการสนทนาเลย </p>
+                        
                     </div>
                     {% endif %}
 
